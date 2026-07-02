@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>海绵胸杯黄斑缺陷视觉检测模型项目计划书</title>
+  <style>
+:root {
+  color-scheme: light;
+  --ink: #17202a;
+  --muted: #5f6f7f;
+  --line: #d9e1e8;
+  --soft: #f5f8fa;
+  --accent: #b7791f;
+  --accent-soft: #fff6df;
+  --title: #0f3d57;
+}
+
+@page {
+  size: A4;
+  margin: 18mm 16mm 20mm;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #eef2f5;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans CJK SC", "Noto Sans", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.72;
+  letter-spacing: 0;
+}
+
+.page {
+  width: min(100%, 920px);
+  margin: 28px auto;
+  background: #fff;
+  border: 1px solid #dde5ec;
+  box-shadow: 0 16px 45px rgba(15, 61, 87, 0.12);
+}
+
+.document {
+  padding: 46px 54px 54px;
+}
+
+.cover-line {
+  width: 72px;
+  height: 4px;
+  margin-bottom: 20px;
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--title);
+  line-height: 1.28;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+h1 {
+  margin: 0 0 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 29px;
+  font-weight: 750;
+}
+
+h2 {
+  margin: 34px 0 12px;
+  padding-top: 6px;
+  font-size: 21px;
+  font-weight: 720;
+}
+
+h2::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 20px;
+  margin-right: 10px;
+  vertical-align: -3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+h3 {
+  margin: 24px 0 10px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+h4 {
+  margin: 20px 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+p {
+  margin: 9px 0;
+}
+
+strong {
+  color: #102f45;
+  font-weight: 720;
+}
+
+a {
+  color: #0f5f8c;
+}
+
+blockquote {
+  margin: 0 0 24px;
+  padding: 14px 18px;
+  color: #334155;
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+  margin: 4px 0;
+}
+
+hr {
+  margin: 30px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+ul,
+ol {
+  margin: 8px 0 14px 1.35em;
+  padding: 0;
+}
+
+li {
+  margin: 4px 0;
+  padding-left: 2px;
+}
+
+table {
+  width: 100%;
+  margin: 16px 0 22px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 12.5px;
+  line-height: 1.55;
+  page-break-inside: auto;
+}
+
+thead {
+  display: table-header-group;
+}
+
+tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+th,
+td {
+  padding: 9px 10px;
+  vertical-align: top;
+  border: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+
+th {
+  color: #12364f;
+  background: #edf4f8;
+  font-weight: 720;
+}
+
+tbody tr:nth-child(even) td {
+  background: #fafcfd;
+}
+
+code {
+  padding: 1px 5px;
+  border: 1px solid #d6dee5;
+  border-radius: 4px;
+  background: #f6f8fa;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.92em;
+}
+
+pre {
+  margin: 16px 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  border: 1px solid #d6dee5;
+  border-radius: 8px;
+  background: #f6f8fa;
+  line-height: 1.55;
+}
+
+pre code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.document > *:first-child {
+  margin-top: 0;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff;
+  }
+
+  body {
+    font-size: 12.2px;
+    line-height: 1.62;
+  }
+
+  .page {
+    width: auto;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .document {
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+
+  h2 {
+    margin-top: 26px;
+    font-size: 18px;
+  }
+
+  h3 {
+    font-size: 15px;
+  }
+
+  table {
+    font-size: 10.8px;
+  }
+}
+</style>
+</head>
+<body>
+  <main class="page">
+    <article class="document">
+      <div class="cover-line"></div>
+      <h1>项目计划书：海绵胸杯「黄斑」缺陷视觉检测模型</h1>
+<blockquote>
+<p>版本：v2.2 ｜ 日期：2026-06-26</p>
+<p>本计划根据第一阶段评估结论更新。技术路线已有优先方向，最终执行方案仍需根据 <code>.evo</code> 生成链路、平台能力和验收标准共同确认。</p>
+</blockquote>
+<hr>
+<h2>一、项目背景与目标</h2>
+<p>现有的黑点（black dot）缺陷检测系统基于 YOLO，识别率已达 99% 以上，并配套有标注与批量推理平台。本项目在此基础上，新增对「黄斑」的识别能力——黄斑是一种偏黄的污渍，比黑点更不明显（肉眼需仔细辨认）。经第一阶段数据分析，其形态更准确描述为<strong>黄条/黄线</strong>（条状、线状），而非片状色块。</p>
+<p><strong>项目目标</strong>：交付一个能稳定识别黄斑、区分合格品与残次品的、训练完成的视觉模型。</p>
+<p><strong>项目周期</strong>：预计 6–8 周，具体取决于 <code>.evo</code> 生成链路确认、专家示范标注、更多样本补充和验收标准对齐进度。</p>
+<hr>
+<h2>二、交付物与项目范围</h2>
+<p><strong>核心交付物</strong></p>
+<ul>
+<li>一个达到约定指标的 <code>.evo</code> 格式模型文件。</li>
+</ul>
+<p><strong>可选配套交付（如双方确认纳入范围，用于需求方技术团队接续与复现）</strong></p>
+<ul>
+<li>标注数据集；</li>
+<li>训练代码；</li>
+<li>技术说明文档（方法、标注口径、指标、复现方式）。</li>
+</ul>
+<p><strong>不在本项目范围内（由需求方技术团队负责）</strong></p>
+<ul>
+<li>模型的生产部署、批量运行及界面 / 平台。</li>
+</ul>
+<p>由于核心交付物是模型文件，项目成效主要体现在<strong>模型识别效果</strong>上。因此<strong>提前对齐验收标准</strong>对本项目很关键（见第五、八节）。</p>
+<hr>
+<h2>三、技术方案</h2>
+<p><strong>整体思路</strong>：主体沿用与现有系统一致的 YOLO / Ultralytics 范式，以便与既有标注流程和数据格式对齐，并复用成熟工具链。</p>
+<p><strong>重要说明——不从零搭建神经网络</strong>：本项目采用成熟的开源框架，并基于其<strong>预训练模型做微调（transfer learning，迁移学习）</strong>，而不是从头编写网络。预训练模型已在海量通用图像上学到了边缘、纹理、形状等基础视觉能力，我们只需在样本上做针对性微调即可。当前样本量仍偏少，后续如能补充到数百张量级，模型效果和评估可信度会更稳。</p>
+<p><strong>模型与算法选型</strong></p>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>选型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主模型</td>
+<td><strong>Ultralytics YOLO</strong>（当前稳定版本，如 YOLO11 系列；分割任务用其 <code>-seg</code> 变体）</td>
+<td>与现有黑点系统同源、工具链成熟；基于预训练权重微调</td>
+</tr>
+<tr>
+<td>模型形式</td>
+<td><strong>优先推荐语义分割（segmentation）</strong></td>
+<td>黄条是条状/线状，矩形框会框入大量正常区域；分割能贴合轮廓，更准确。最终采用分割、检测或分类，需以现有平台和 <code>.evo</code> 对应的任务类型为准</td>
+</tr>
+<tr>
+<td>基线方法</td>
+<td><strong>传统颜色阈值（OpenCV，基于 LAB / HSV）</strong></td>
+<td>已通过实验验证：整图颜色统计无法区分合格品与残次品（信号被背景淹没），<strong>阈值法仅作辅助验证，不作为主方案</strong></td>
+</tr>
+<tr>
+<td>备选方案</td>
+<td><strong>异常检测（Anomalib，如 PatchCore / PaDiM 等方法）</strong></td>
+<td>只用合格品训练、对缺陷样本需求低，适合样本少或信号弱的情形</td>
+</tr>
+<tr>
+<td>分类判别</td>
+<td><strong>分类（classification）CNN</strong>（如 ResNet / EfficientNet 等）</td>
+<td>对区域或整图判别合格 / 残次，可作为流程中的一环</td>
+</tr>
+<tr>
+<td>标注辅助</td>
+<td><strong>SAM / SAM 2</strong></td>
+<td>可作为离线标注辅助工具；是否接入正式流程，取决于现有平台是否支持 mask / 多边形格式导入</td>
+</tr>
+<tr>
+<td>预处理</td>
+<td><strong>LAB 色彩空间增强</strong></td>
+<td>增强黄斑信号，提升识别与标注效果（见下）</td>
+</tr>
+</tbody>
+</table>
+<p>最终采用哪条路线，取决于第六节的可分性评估结果、现有平台能力和 <code>.evo</code> 生成方式（信号清晰则优先分割；平台仅支持检测或分类时需相应适配；样本少或信号弱则保留异常检测作为备选）。成熟的工业检测系统通常由多个模型与传统方法组合而成；本项目会在了解现有检测流程的构成后（见第五节），选择与之衔接的结构，必要时以分类 CNN 等作为流程的一环。</p>
+<p><strong>关键方法——色彩空间增强（LAB）</strong>：黄与白的差异本质是颜色差异。将图像转到 LAB 色彩空间后，其 b 通道（蓝–黄轴）能显著增强肉眼难辨的黄条信号。<strong>已验证</strong>：A型（明显线条）在 LAB_b 增强图中非常清晰，可直接辅助标注；B型（极弱信号）在多种增强方法下仍不清晰，需质检专家现场确认位置。</p>
+<p><strong>关于可达指标（已更新）</strong>：经第一阶段评估，黄条存在两种形态：
+- <strong>A型（约 34 张）</strong>：信号明确，LAB_b 增强可见，预期模型可以学习
+- <strong>B型（约 13 张）</strong>：信号极弱，图像处理后仍无法显现，属真正难例</p>
+<p>建议双方就 B型的<strong>验收标准与优先级</strong>尽早确认：若 B型必须达到同等检测率，技术难度显著高于 A型，需适当调整预期或采样方案。</p>
+<p><strong>现有样本情况</strong>：当前已整理出 <strong>47 张黄斑 / 黄条图像</strong>、<strong>22 张合格品图像</strong>，另有 <strong>13 张带框参考图</strong>可用于理解前序系统的检出结果。以上数据已足够开展可分性评估、标注规范制定和首版基线实验；若要提升模型泛化能力和验收可信度，仍建议继续补充更多已确诊黄斑样本和合格品样本。</p>
+<hr>
+<h2>四、项目计划与里程碑</h2>
+<p><strong>执行原则</strong>
+1. <strong>端到端优先</strong>：尽早打通「标注 → 训练 → 推理」完整链路，再逐步迭代提升效果。
+2. <strong>输入前置</strong>：项目一开始就提出所需资料和确认事项（第五节），避免关键依赖造成阻塞。
+3. <strong>迭代受控</strong>：核心调优阶段设定时间盒，以指标驱动决策。
+4. <strong>可复现</strong>：全程对代码和实验记录做版本化管理。</p>
+<p><strong>里程碑一览</strong></p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>时间</th>
+<th>关键里程碑</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一</td>
+<td>第 1 周</td>
+<td>可分性评估完成、技术路线初步确定</td>
+<td>✅ 完成</td>
+</tr>
+<tr>
+<td>二</td>
+<td>第 2 周</td>
+<td>标注规范定稿、平台上线、质检专家示范标注 B型</td>
+<td>进行中</td>
+</tr>
+<tr>
+<td>三</td>
+<td>第 3 周</td>
+<td>标注完成、端到端链路验证通过、基线模型与基线指标</td>
+<td></td>
+</tr>
+<tr>
+<td>四</td>
+<td>第 4 周</td>
+<td>模型效果显著提升</td>
+<td></td>
+</tr>
+<tr>
+<td>五</td>
+<td>第 5 周</td>
+<td>达到或接近目标指标</td>
+<td></td>
+</tr>
+<tr>
+<td>六</td>
+<td>第 6 周</td>
+<td><code>.evo</code> 生成链路适配、试导出与验证</td>
+<td></td>
+</tr>
+<tr>
+<td>七至八</td>
+<td>第 7–8 周</td>
+<td>边缘情况处理、文档完善、正式交付</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>各阶段说明</strong></p>
+<p><strong>阶段一（第 1 周）｜可分性评估与方案确定</strong> ✅ 已完成
+- ✅ LAB / 色彩空间可分性评估完成：A型信号明确，B型信号极弱
+- ✅ 技术路线初步确定：优先推荐 YOLO 分割，颜色阈值仅作辅助；最终任务类型需与平台 / <code>.evo</code> 能力对齐
+- ✅ 标注工具（前序团队平台）已确认可用
+- ✅ 现有样本整理完成（47张黄条图 + 22张合格品）
+- ⏳ 待完成：<code>.evo</code> 生成方式确认、目标指标共识</p>
+<p><strong>阶段二（第 2 周）｜标注规范与专家示范</strong></p>
+<ul>
+<li>平台上线后，<strong>安排质检专家示范标注</strong>：优先标 B型图（信号弱、开发者无法独立判断位置），建立标注基准</li>
+<li>制定带正反示例的<strong>标注规范</strong>，明确黄条判定与多边形圈选口径</li>
+<li>确认 <code>.evo</code> 生成流程（平台是否支持直接训练导出）</li>
+<li><strong>里程碑</strong>：标注规范定稿 + 专家示范完成。</li>
+</ul>
+<p><strong>阶段三（第 3 周）｜数据标注与基线模型</strong></p>
+<ul>
+<li>完成主体数据标注，并据实践持续校准标注口径；</li>
+<li>划分训练集 / 验证集（验收测试集不参与训练）；</li>
+<li>训练首版模型，建立基线指标与实验记录。</li>
+<li><strong>里程碑</strong>：标注完成 + 基线模型与基线指标。</li>
+</ul>
+<p><strong>阶段四（第 4 周）｜模型迭代（一）</strong></p>
+<ul>
+<li>诊断基线表现，定位主要影响因素；</li>
+<li>预处理（含 LAB 增强）、数据增强、超参优化；</li>
+<li>按需引入颜色阈值法融合或异常检测方案。</li>
+<li><strong>里程碑</strong>：模型效果较基线显著提升。</li>
+</ul>
+<p><strong>阶段五（第 5 周）｜模型迭代（二）与判别阈值调优</strong></p>
+<ul>
+<li>迭代至指标稳定；</li>
+<li>依据需求方对<strong>漏检 / 误检</strong>的相对偏好调校判别阈值；</li>
+<li>在验收测试集上评估，对照目标指标。</li>
+<li><strong>里程碑</strong>：达到或接近目标指标。</li>
+</ul>
+<p><strong>阶段六（第 6 周）｜模型导出与验证</strong></p>
+<ul>
+<li>根据需求方提供的 <code>.evo</code> 生成链路进行导出或适配，并先行试导以确认流程与格式兼容；</li>
+<li>在验收标准上完成最终验证；</li>
+<li>整理交付包；其中标注数据、训练代码和说明文档是否纳入正式交付，以双方确认的交付边界为准。</li>
+<li><strong>里程碑</strong>：<code>.evo</code> 试导出通过；若 <code>.evo</code> 生成链路不可得，则明确替代交付格式与剩余风险。</li>
+</ul>
+<p><strong>阶段七至八（第 7–8 周）｜缓冲与交付</strong></p>
+<ul>
+<li>处理特殊光照 / 角度 / 罕见形态等边缘情况；</li>
+<li>完善文档，正式交付。</li>
+</ul>
+<p><strong>关于周期弹性</strong>：上面按 6–8 周编排，第 7–8 周为缓冲。如果周期压缩到 6 周，会优先保障核心链路（可分性评估、端到端贯通、基线与迭代、模型导出与验证），相应压缩迭代深度和边缘情况打磨；具体优先级可在项目开始时与需求方确认。</p>
+<hr>
+<h2>五、需求方需提供的资料、确认事项与资源</h2>
+<p>为保证项目按期推进，以下建议在<strong>项目开始阶段</strong>提供或确认。优先级分为高 / 中 / 低。</p>
+<p><strong>（一）已具备 / 仍建议补充的资料</strong></p>
+<table>
+<thead>
+<tr>
+<th>事项</th>
+<th>用途说明</th>
+<th>优先级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一个现成的 <code>.evo</code> 文件样本（比如黑点模型的）及其<strong>生成方法 / 脚本</strong></td>
+<td>确保最终交付格式与需求方系统兼容</td>
+<td>高</td>
+</tr>
+<tr>
+<td><strong>已确诊含黄斑</strong>的样本图像</td>
+<td>当前已有 47 张，可用于首版实验；后续越多越好，用于提升模型泛化能力和测试可信度</td>
+<td>高 / 已部分具备</td>
+</tr>
+<tr>
+<td><strong>合格品</strong>样本图像</td>
+<td>当前已有 22 张，可用于正常样本基准；后续越多越好，尤其有利于异常检测方案和误检控制</td>
+<td>高 / 已部分具备</td>
+</tr>
+<tr>
+<td><strong>黄斑判定标准 / 判例</strong>（最好有专家标注的示例图）</td>
+<td>统一标注和验收口径，确保理解一致</td>
+<td>高</td>
+</tr>
+<tr>
+<td>黑点模型的标注数据样本及格式说明</td>
+<td>对齐数据格式和标注方式</td>
+<td>中</td>
+</tr>
+<tr>
+<td>现有标注工具的使用权限和说明</td>
+<td>复用既有标注流程</td>
+<td>✅ 已确认可用</td>
+</tr>
+<tr>
+<td><strong>质检专家参与示范标注</strong>（尤其是 B型难例图片）</td>
+<td>B型黄条信号极弱，开发者无法独立判断位置，必须专家现场指出后方可标注</td>
+<td>高</td>
+</tr>
+<tr>
+<td>黑点模型的训练配置 / 经验（如果方便）</td>
+<td>参考以提升效率</td>
+<td>低</td>
+</tr>
+</tbody>
+</table>
+<p><strong>（二）需要确认的事项</strong></p>
+<table>
+<thead>
+<tr>
+<th>事项</th>
+<th>用途说明</th>
+<th>优先级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>验收标准</strong>：测试数据、评估指标和达标门槛</td>
+<td>明确目标和验收依据</td>
+<td>高</td>
+</tr>
+<tr>
+<td><strong>漏检和误检的相对容忍度</strong></td>
+<td>决定判别阈值的调校方向</td>
+<td>高</td>
+</tr>
+<tr>
+<td><strong>现有黑点检测的完整流程构成</strong>：用了哪些模型 / 方法（YOLO、分类 CNN、传统处理等）、如何串联、<code>.evo</code> 对应其中哪一部分；黄斑是否沿用同一结构</td>
+<td>摸清系统构成，便于复用、对齐与确定交付边界（含确定黄斑最终采用检测 / 分割 / 分类）</td>
+<td>中</td>
+</tr>
+<tr>
+<td>黄斑的发生率</td>
+<td>评估数据分布和方案选型</td>
+<td>中</td>
+</tr>
+<tr>
+<td>交付边界确认（是否只要 <code>.evo</code>；是否含标注数据 / 代码；部署由需求方负责）</td>
+<td>明确范围</td>
+<td>中</td>
+</tr>
+</tbody>
+</table>
+<p><strong>（三）需要提供的资源</strong></p>
+<table>
+<thead>
+<tr>
+<th>事项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>算力支持</td>
+<td>提供一台带 NVIDIA GPU（显存 ≥16GB）的云服务器，或报销云 GPU 费用。训练阶段需要 GPU；按量使用、累计用量有限，成本可控。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>六、关键决策（可分性评估结果 → 技术路线）</h2>
+<p>首阶段可分性评估的结果将决定后续技术路线，也是目标指标对齐的依据：</p>
+<table>
+<thead>
+<tr>
+<th>评估结果</th>
+<th>应对路线</th>
+<th>实际情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>黄斑信号清晰可分</td>
+<td>优先以<strong>分割方案</strong>为主，颜色阈值法作基线</td>
+<td>✅ A型（约34张）符合此情形，技术上优先推荐分割</td>
+</tr>
+<tr>
+<td>信号较弱 / 不稳定</td>
+<td>综合多通道增强、异常检测；并就<strong>目标指标</strong>与需求方再确认</td>
+<td>⚠️ B型（约13张）符合此情形，<strong>需与需求方确认验收期望</strong></td>
+</tr>
+<tr>
+<td>确诊黄斑样本较少</td>
+<td>倾向<strong>异常检测</strong>或监督式分割的小样本基线</td>
+<td>当前已有 47 张，可先跑首版实验；后续仍建议继续补充</td>
+</tr>
+<tr>
+<td>确诊黄斑样本充足</td>
+<td>倾向<strong>监督式分割</strong></td>
+<td>目标路线，需持续增加标注量</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>七、风险与应对</h2>
+<table>
+<thead>
+<tr>
+<th>风险</th>
+<th>应对措施</th>
+<th>当前状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>黄斑可分性受限（信号微弱）</td>
+<td>首阶段就完成评估；必要时调整方案，并就目标指标与需求方对齐</td>
+<td>⚠️ B型信号极弱，需与需求方确认验收期望</td>
+</tr>
+<tr>
+<td><strong>B型难例无法标注</strong></td>
+<td>安排质检专家现场示范，开发者无法独立判断 B型位置</td>
+<td>🔴 待安排，平台上线时第一优先</td>
+</tr>
+<tr>
+<td>标注口径不一致</td>
+<td>制定带示例的标注规范，结合 LAB 增强辅助辨认，并持续质检</td>
+<td>待平台上线后制定</td>
+</tr>
+<tr>
+<td>关键输入（资料 / 确认事项）延迟</td>
+<td>项目一开始就提出清单；现有样本先用于评估和基线实验，更多样本到位后再迭代提升</td>
+<td>进行中</td>
+</tr>
+<tr>
+<td><code>.evo</code> 导出格式兼容</td>
+<td>早期拿到样本和生成方法，提前试导验证；若链路不可得，需另行确认替代交付格式</td>
+<td>🔴 尚未确认，下周平台上线时优先解决</td>
+</tr>
+<tr>
+<td>周期偏紧</td>
+<td>端到端优先、迭代受控，并按优先级取舍范围</td>
+<td>正常</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>八、验收与指标</h2>
+<p>因为核心交付物是模型文件，建议双方在<strong>项目开始阶段</strong>就把验收标准定下来，包括：</p>
+<ul>
+<li>明确<strong>测试数据集、评估指标和达标门槛</strong>；</li>
+<li>明确<strong>漏检和误检</strong>的相对优先级（工业质检通常对漏检更审慎，也就是更倾向「宁可误检、不可漏检」）。</li>
+</ul>
+<p>本项目会保留独立测试集做客观评估；如需求方提供验收测试集，将以其为准做最终验证。</p>
+<hr>
+<p><em>本计划为阶段性版本，最终方案、目标指标、交付边界和排期会根据需求方提供的资料与确认事项共同细化确定。</em></p>
+    </article>
+  </main>
+</body>
+</html>

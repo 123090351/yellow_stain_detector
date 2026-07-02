@@ -1,0 +1,59 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Local notebooks and logs
+.ipynb_checkpoints/
+*.log
+
+# Model weights and exported models
+*.pt
+*.pth
+*.onnx
+*.engine
+*.evo
+models/pretrained/
+models/exported/
+
+# Training / prediction outputs
+runs/
+outputs/
+
+# Third-party source checkout
+external/ultralytics/
+
+# Raw or client-provided image data
+data/
+pic/
+huangban/
+OK/
+
+# Generated or experimental image outputs
+enhanced/
+enhanced_v2/
+reveal_out/
+*.zip
+
+# Generated datasets
+dataset_yolo_toy/images/
+dataset_yolo_toy/labels/
+datasets/
+
+# Annotation data may contain client image references or sensitive metadata.
+# If the team decides labels should be versioned, remove these lines or
+# whitelist a cleaned export folder.
+annotations/

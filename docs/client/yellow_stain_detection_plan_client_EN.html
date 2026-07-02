@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Plan: Vision Model for Detecting Yellow Stains on Foam Bra Cups</title>
+  <style>
+:root {
+  color-scheme: light;
+  --ink: #17202a;
+  --muted: #5f6f7f;
+  --line: #d9e1e8;
+  --soft: #f5f8fa;
+  --accent: #b7791f;
+  --accent-soft: #fff6df;
+  --title: #0f3d57;
+}
+
+@page {
+  size: A4;
+  margin: 18mm 16mm 20mm;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #eef2f5;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans CJK SC", "Noto Sans", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.72;
+  letter-spacing: 0;
+}
+
+.page {
+  width: min(100%, 920px);
+  margin: 28px auto;
+  background: #fff;
+  border: 1px solid #dde5ec;
+  box-shadow: 0 16px 45px rgba(15, 61, 87, 0.12);
+}
+
+.document {
+  padding: 46px 54px 54px;
+}
+
+.cover-line {
+  width: 72px;
+  height: 4px;
+  margin-bottom: 20px;
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--title);
+  line-height: 1.28;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+h1 {
+  margin: 0 0 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 29px;
+  font-weight: 750;
+}
+
+h2 {
+  margin: 34px 0 12px;
+  padding-top: 6px;
+  font-size: 21px;
+  font-weight: 720;
+}
+
+h2::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 20px;
+  margin-right: 10px;
+  vertical-align: -3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+h3 {
+  margin: 24px 0 10px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+h4 {
+  margin: 20px 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+p {
+  margin: 9px 0;
+}
+
+strong {
+  color: #102f45;
+  font-weight: 720;
+}
+
+a {
+  color: #0f5f8c;
+}
+
+blockquote {
+  margin: 0 0 24px;
+  padding: 14px 18px;
+  color: #334155;
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+  margin: 4px 0;
+}
+
+hr {
+  margin: 30px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+ul,
+ol {
+  margin: 8px 0 14px 1.35em;
+  padding: 0;
+}
+
+li {
+  margin: 4px 0;
+  padding-left: 2px;
+}
+
+table {
+  width: 100%;
+  margin: 16px 0 22px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 12.5px;
+  line-height: 1.55;
+  page-break-inside: auto;
+}
+
+thead {
+  display: table-header-group;
+}
+
+tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+th,
+td {
+  padding: 9px 10px;
+  vertical-align: top;
+  border: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+
+th {
+  color: #12364f;
+  background: #edf4f8;
+  font-weight: 720;
+}
+
+tbody tr:nth-child(even) td {
+  background: #fafcfd;
+}
+
+code {
+  padding: 1px 5px;
+  border: 1px solid #d6dee5;
+  border-radius: 4px;
+  background: #f6f8fa;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.92em;
+}
+
+pre {
+  margin: 16px 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  border: 1px solid #d6dee5;
+  border-radius: 8px;
+  background: #f6f8fa;
+  line-height: 1.55;
+}
+
+pre code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.document > *:first-child {
+  margin-top: 0;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff;
+  }
+
+  body {
+    font-size: 12.2px;
+    line-height: 1.62;
+  }
+
+  .page {
+    width: auto;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .document {
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+
+  h2 {
+    margin-top: 26px;
+    font-size: 18px;
+  }
+
+  h3 {
+    font-size: 15px;
+  }
+
+  table {
+    font-size: 10.8px;
+  }
+}
+</style>
+</head>
+<body>
+  <main class="page">
+    <article class="document">
+      <div class="cover-line"></div>
+      <h1>Project Plan: Vision Model for Detecting Yellow Stains on Foam Bra Cups</h1>
+<blockquote>
+<p>Version: v1 ｜ Date: ＿＿＿＿</p>
+<p>This plan will be refined based on the materials and confirmations provided by the Client.</p>
+</blockquote>
+<hr>
+<h2>1. Background and Objectives</h2>
+<p>The Client&rsquo;s existing black-dot defect detection system is based on YOLO, with a recognition rate already above 99%, and comes with an annotation and batch-inference platform. This project builds on that foundation to add the ability to detect <strong>yellow stains</strong> — a yellowish discoloration that is more subtle than black dots (it requires careful inspection by eye, is irregular in shape, and has blurred edges).</p>
+<p><strong>Objective</strong>: Deliver a trained vision model that reliably detects yellow stains and classifies products as conforming (pass) or defective.</p>
+<p><strong>Duration</strong>: 6–7 weeks.</p>
+<hr>
+<h2>2. Deliverables and Scope</h2>
+<p><strong>Core deliverable</strong></p>
+<ul>
+<li>One trained model file in <code>.evo</code> format meeting the agreed metrics.</li>
+</ul>
+<p><strong>Supporting deliverables (to help the Client&rsquo;s technical team continue and reproduce the work)</strong></p>
+<ul>
+<li>Annotated dataset；</li>
+<li>Training code；</li>
+<li>Technical documentation (method, annotation criteria, metrics, reproduction steps).</li>
+</ul>
+<p><strong>Out of scope (handled by the Client&rsquo;s technical team)</strong></p>
+<ul>
+<li>Production deployment, batch operation, and the interface / platform of the model.</li>
+</ul>
+<p>Because the core deliverable is a model file, project success is primarily reflected in <strong>model recognition performance</strong>. For this reason, <strong>aligning on acceptance criteria up front</strong> is critical to the project (see Sections 5 and 8).</p>
+<hr>
+<h2>3. Technical Approach</h2>
+<p><strong>Overall direction</strong>: The work follows the same YOLO / Ultralytics paradigm as the existing system, so as to align with the existing annotation workflow and data format and to reuse a mature toolchain.</p>
+<p><strong>Important note — no neural network is built from scratch</strong>: This project uses a mature open-source framework and <strong>fine-tunes its pretrained models (transfer learning)</strong> rather than writing a network from the ground up. Pretrained models have already learned fundamental visual capabilities — edges, textures, shapes — from large volumes of general images; we only need to fine-tune them on the project&rsquo;s samples. This is precisely what makes the project achievable within 6–7 weeks using a few hundred images.</p>
+<p><strong>Model and algorithm selection</strong></p>
+<table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Selection</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary model</td>
+<td><strong>Ultralytics YOLO</strong> (current stable version, e.g. the YOLO11 family; the <code>-seg</code> variant for segmentation)</td>
+<td>Same lineage as the existing black-dot system, mature toolchain; fine-tuned from pretrained weights</td>
+</tr>
+<tr>
+<td>Model form</td>
+<td><strong>Segmentation</strong> preferred, with rectangular detection or classification as needed</td>
+<td>Yellow stains are irregular patches; segmentation fits their actual shape better than a bounding box</td>
+</tr>
+<tr>
+<td>Baseline method</td>
+<td><strong>Classical color thresholding (OpenCV, based on LAB / HSV)</strong></td>
+<td>Fast, interpretable, may resolve part of the problem directly; serves as a baseline reference</td>
+</tr>
+<tr>
+<td>Fallback</td>
+<td><strong>Anomaly detection (Anomalib, e.g. PatchCore / PaDiM)</strong></td>
+<td>Trains on conforming samples only, low demand for defect samples; suited to cases with few samples or a weak signal</td>
+</tr>
+<tr>
+<td>Classification</td>
+<td><strong>Classification CNN</strong> (e.g. ResNet / EfficientNet)</td>
+<td>Judges a region or whole image as conforming / defective; can serve as one stage in the pipeline</td>
+</tr>
+<tr>
+<td>Annotation aid</td>
+<td><strong>SAM / SAM 2</strong></td>
+<td>Auto-generates a contour from a click, greatly speeding up segmentation annotation</td>
+</tr>
+<tr>
+<td>Preprocessing</td>
+<td><strong>LAB color-space enhancement</strong></td>
+<td>Enhances the yellow-stain signal, improving both recognition and annotation (see below)</td>
+</tr>
+</tbody>
+</table>
+<p>Which route is ultimately adopted depends on the separability assessment in Section 6 (a clear signal favors segmentation; few samples or a weak signal favors anomaly detection). Mature industrial inspection systems are typically a combination of several models and classical methods; this project will, after understanding the composition of the existing detection pipeline (see Section 5), choose a structure that integrates with it, using a classification CNN or similar as one stage where appropriate.</p>
+<p><strong>Key method — color-space enhancement (LAB)</strong>: The difference between yellow and white is fundamentally a difference in color. After converting an image to the LAB color space, its b channel (the blue–yellow axis) can significantly amplify a yellow-stain signal that is hard to see by eye, making it far easier to recognize and annotate. This is the core verification method in the first phase and can also serve as model input preprocessing.</p>
+<p><strong>On attainable metrics</strong>: Yellow stains are more subtle than black dots, so <strong>the final achievable recognition metric depends on the separability of yellow stains in the imaging</strong>. The project will complete a separability assessment and fix the technical route in the first phase (Week 1). We recommend that both parties jointly confirm the <strong>target metric</strong> after that assessment (see Section 6).</p>
+<hr>
+<h2>4. Project Plan and Milestones</h2>
+<p><strong>Execution principles</strong>
+1. <strong>End-to-end first</strong>: Get the full &ldquo;annotation → training → inference&rdquo; pipeline running as early as possible, then iterate on performance.
+2. <strong>Inputs up front</strong>: Raise the required materials and confirmations (Section 5) at the very start of the project, to avoid critical dependencies causing blockers.
+3. <strong>Controlled iteration</strong>: Time-box the core tuning phase and drive decisions by metrics.
+4. <strong>Reproducible</strong>: Version-control code and experiment records throughout.</p>
+<p><strong>Milestones at a glance</strong></p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Timing</th>
+<th>Key milestone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Week 1</td>
+<td>Separability assessment done, technical route fixed, target-metric consensus</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Week 2</td>
+<td>Annotation guidelines finalized, end-to-end pipeline verified</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Week 3</td>
+<td>Annotation complete, baseline model and baseline metrics</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Week 4</td>
+<td>Model performance significantly improved</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Week 5</td>
+<td>Target metric reached or approached</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Week 6</td>
+<td>Deliverable <code>.evo</code> and delivery package ready</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Week 7</td>
+<td>Edge cases handled, documentation finalized, formal delivery</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Phase details</strong></p>
+<p><strong>Phase 1 (Week 1) — Separability assessment and route selection</strong></p>
+<ul>
+<li>Complete a <strong>separability assessment</strong> of yellow stains via LAB / color-space methods, and fix the technical route；</li>
+<li>Survey the sample data (stain size, contrast, occurrence rate, distribution of hard cases)；</li>
+<li>Align with the existing system: annotation tool, data format, <code>.evo</code> generation method；</li>
+<li>Set up the development and training environment.</li>
+<li><strong>Milestone</strong>: separability conclusion + technical route fixed + (recommended) target-metric consensus.</li>
+</ul>
+<p><strong>Phase 2 (Week 2) — Annotation guidelines and end-to-end pipeline</strong></p>
+<ul>
+<li>Draft <strong>annotation guidelines</strong> with positive and negative examples, clarifying the judgment and outlining criteria；</li>
+<li>Configure the annotation tool (including SAM-assisted segmentation for efficiency), with data export aligned to the training format；</li>
+<li>Use a small sample to get the full &ldquo;annotation → training → batch inference&rdquo; pipeline running (the goal is to connect the flow end to end).</li>
+<li><strong>Milestone</strong>: annotation guidelines finalized + end-to-end pipeline verified.</li>
+</ul>
+<p><strong>Phase 3 (Week 3) — Data annotation and baseline model</strong></p>
+<ul>
+<li>Complete the bulk of the annotation, calibrating the criteria continuously as work proceeds；</li>
+<li>Split into training / validation sets (the acceptance test set is kept out of training)；</li>
+<li>Train the first model version and establish baseline metrics and an experiment log.</li>
+<li><strong>Milestone</strong>: annotation complete + baseline model and baseline metrics.</li>
+</ul>
+<p><strong>Phase 4 (Week 4) — Model iteration (1)</strong></p>
+<ul>
+<li>Diagnose the baseline performance and pinpoint the main contributing factors；</li>
+<li>Preprocessing (including LAB enhancement), data augmentation, hyperparameter tuning；</li>
+<li>Introduce color-thresholding fusion or an anomaly-detection approach as needed.</li>
+<li><strong>Milestone</strong>: model performance significantly improved over the baseline.</li>
+</ul>
+<p><strong>Phase 5 (Week 5) — Model iteration (2) and decision-threshold tuning</strong></p>
+<ul>
+<li>Iterate until the metric stabilizes；</li>
+<li>Tune the decision threshold according to the Client&rsquo;s relative preference between <strong>false negatives / false positives</strong>；</li>
+<li>Evaluate on the acceptance test set against the target metric.</li>
+<li><strong>Milestone</strong>: target metric reached or approached.</li>
+</ul>
+<p><strong>Phase 6 (Week 6) — Model export and validation</strong></p>
+<ul>
+<li>Export the model to <code>.evo</code> using the Client&rsquo;s method, with a trial export first to confirm the process and format compatibility；</li>
+<li>Complete final validation against the acceptance criteria；</li>
+<li>Assemble the delivery package (model, annotated data, training code, documentation).</li>
+<li><strong>Milestone</strong>: deliverable <code>.evo</code> + delivery package ready.</li>
+</ul>
+<p><strong>Phase 7 (Week 7) — Buffer and delivery</strong></p>
+<ul>
+<li>Handle edge cases such as unusual lighting / angles / rare morphologies；</li>
+<li>Finalize documentation and deliver formally.</li>
+</ul>
+<p><strong>On timeline flexibility</strong>: The above is laid out over 7 weeks, with Week 7 as buffer. If the duration is 6 weeks, priority will go to the core path (separability assessment, end-to-end connection, baseline and iteration, model export and validation), with iteration depth and edge-case polishing compressed accordingly; specific priorities can be confirmed with the Client at project start.</p>
+<hr>
+<h2>5. Materials, Confirmations, and Resources Required from the Client</h2>
+<p>To keep the project on schedule, the following are recommended to be provided or confirmed at the <strong>start of the project</strong>. Priorities are marked High / Medium / Low.</p>
+<p><strong>(a) Materials to provide</strong></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Purpose</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>An existing <code>.evo</code> file sample (e.g. from the black-dot model) and its <strong>generation method / script</strong></td>
+<td>Ensure the final delivery format is compatible with the Client&rsquo;s system</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Sample images <strong>confirmed to contain yellow stains</strong> (as many as possible)</td>
+<td>Yellow-stain feature analysis, separability assessment, model training</td>
+<td>High</td>
+</tr>
+<tr>
+<td><strong>Conforming</strong> sample images (as many as possible)</td>
+<td>The anomaly-detection approach and establishing a &ldquo;normal&rdquo; baseline</td>
+<td>High</td>
+</tr>
+<tr>
+<td><strong>Yellow-stain judgment criteria / reference cases</strong> (ideally with expert-annotated examples)</td>
+<td>Unify annotation and acceptance criteria, ensuring a shared understanding</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Annotation data samples and format spec from the black-dot model</td>
+<td>Align data format and annotation style</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Access to and instructions for the existing annotation tool</td>
+<td>Reuse the existing annotation workflow</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>The black-dot model&rsquo;s training configuration / experience (if convenient)</td>
+<td>Reference to improve efficiency</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<p><strong>(b) Items to confirm</strong></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Purpose</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Acceptance criteria</strong>: test data, evaluation metric, and pass threshold</td>
+<td>Define the goal and basis for acceptance</td>
+<td>High</td>
+</tr>
+<tr>
+<td><strong>Relative tolerance for false negatives vs. false positives</strong></td>
+<td>Determines the direction of decision-threshold tuning</td>
+<td>High</td>
+</tr>
+<tr>
+<td><strong>Composition of the existing black-dot detection pipeline</strong>: which models / methods are used (YOLO, classification CNN, classical processing, etc.), how they are chained, and which part the <code>.evo</code> corresponds to; whether yellow stains will follow the same structure</td>
+<td>Understand the system composition for reuse, alignment, and scope definition (including whether yellow stains use detection / segmentation / classification)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Occurrence rate of yellow stains</td>
+<td>Assess data distribution and approach selection</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Scope confirmation (whether only the <code>.evo</code> is needed; whether annotated data / code is included; deployment handled by the Client)</td>
+<td>Define scope</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<p><strong>(c) Resources to provide</strong></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Compute</td>
+<td>A cloud server with an NVIDIA GPU (≥16GB VRAM), or reimbursement of cloud-GPU costs. A GPU is needed during training; usage is on-demand, total usage is limited, and cost is controllable.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>6. Key Decision (Separability Assessment Result → Technical Route)</h2>
+<p>The result of the first-phase separability assessment will determine the technical route and serve as the basis for aligning on the target metric:</p>
+<table>
+<thead>
+<tr>
+<th>Assessment result</th>
+<th>Route</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Yellow-stain signal clearly separable</td>
+<td>Primarily a <strong>segmentation</strong> approach (optionally with LAB-enhanced input), with color thresholding as the baseline; performance expected to be good.</td>
+</tr>
+<tr>
+<td>Signal weak / unstable</td>
+<td>Combine multi-channel methods, color normalization, anomaly detection, etc.; and recommend re-confirming the <strong>target metric</strong> with the Client.</td>
+</tr>
+<tr>
+<td>Few confirmed yellow-stain samples</td>
+<td>Favor <strong>anomaly detection</strong> (low demand for defect samples).</td>
+</tr>
+<tr>
+<td>Sufficient confirmed yellow-stain samples</td>
+<td>Favor <strong>supervised detection / segmentation</strong>.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>7. Risks and Mitigations</h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Limited separability of yellow stains (weak signal)</td>
+<td>Complete the assessment in the first phase; adjust the approach as needed and align on the target metric with the Client</td>
+</tr>
+<tr>
+<td>Inconsistent annotation criteria</td>
+<td>Establish annotation guidelines with examples, aid recognition with LAB enhancement, and apply ongoing quality checks</td>
+</tr>
+<tr>
+<td>Delay of key inputs (materials / confirmations)</td>
+<td>Raise the list at project start; before samples arrive, assess with available visible samples to reduce blocking</td>
+</tr>
+<tr>
+<td><code>.evo</code> export format compatibility</td>
+<td>Obtain a sample and the generation method early, and trial-export ahead of time to verify</td>
+</tr>
+<tr>
+<td>Tight schedule</td>
+<td>End-to-end first, controlled iteration, and scope prioritization</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>8. Acceptance and Metrics</h2>
+<p>Because the core deliverable is a model file, we recommend that both parties fix the acceptance criteria at the <strong>start of the project</strong>, including:</p>
+<ul>
+<li>A clear <strong>test dataset, evaluation metric, and pass threshold</strong>；</li>
+<li>The relative priority of <strong>false negatives vs. false positives</strong> (industrial inspection is usually more cautious about false negatives, i.e. it leans toward &ldquo;better a false alarm than a missed defect&rdquo;).</li>
+</ul>
+<p>The project will keep an independent test set for objective evaluation; if the Client provides an acceptance test set, it will be used as the basis for final validation.</p>
+<hr>
+<p><em>This is an initial version. The final approach, target metric, and schedule will be refined and fixed jointly, based on the materials and confirmations provided by the Client.</em></p>
+    </article>
+  </main>
+</body>
+</html>
