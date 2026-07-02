@@ -38,6 +38,7 @@ external/ultralytics/
 
 # Local handoff notes
 ai.md
+CLAUDE.md
 
 # Raw or client-provided image data
 /data/
