@@ -36,24 +36,27 @@ outputs/
 # Third-party source checkout
 external/ultralytics/
 
+# Local handoff notes
+ai.md
+
 # Raw or client-provided image data
-data/
-pic/
-huangban/
-OK/
+/data/
+/pic/
+/huangban/
+/OK/
 
 # Generated or experimental image outputs
-enhanced/
-enhanced_v2/
-reveal_out/
+/enhanced/
+/enhanced_v2/
+/reveal_out/
 *.zip
 
 # Generated datasets
-dataset_yolo_toy/images/
-dataset_yolo_toy/labels/
-datasets/
+/dataset_yolo_toy/images/
+/dataset_yolo_toy/labels/
+/datasets/
 
 # Annotation data may contain client image references or sensitive metadata.
 # If the team decides labels should be versioned, remove these lines or
 # whitelist a cleaned export folder.
-annotations/
+/annotations/
