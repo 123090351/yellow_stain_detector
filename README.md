@@ -81,17 +81,32 @@ Current class list:
 
 ## 3. Current Status / 当前状态
 
-As of 2026-06-30:
+As of 2026-07-02, GitHub contains reusable code, documentation, and small YOLO config files only. Local client images, enhanced images, annotations, model weights, training runs, and third-party source checkouts are ignored by Git and should be shared separately through a drive or shared folder.
 
-截至 2026-06-30：
+截至 2026-07-02，GitHub 只保留可复用代码、文档和小型 YOLO 配置。客户图片、增强图、标注、模型权重、训练输出和第三方源码副本默认被 Git 忽略，应通过网盘或共享目录单独交付。
 
-- `47` yellow-stain / yellow-streak defect images have been organized. / 已整理 `47` 张黄斑 / 黄条缺陷图像。
-- `22` OK images have been organized. / 已整理 `22` 张 OK 合格品图像。
-- `13` reference images with boxes are available, but they are visual references only. / 已整理 `13` 张带框参考图，但只能参考，不能直接作为训练标签。
-- `13` clearer yellow-stain images were annotated with makesense.ai and exported as YOLO `.txt`. / 已用 makesense.ai 标注 `13` 张较清晰黄斑图，并导出 YOLO `.txt`。
-- A toy YOLO dataset has been generated under `dataset_yolo_toy/`. / 已生成小型 YOLO toy 数据集 `dataset_yolo_toy/`。
-- YOLO training has run successfully for a 3-epoch smoke test and a 50-epoch toy run. / 已跑通 3 epoch smoke test 和 50 epoch toy training。
-- The toy model is not usable yet. The pipeline works, but data volume and label quality are the bottlenecks. / toy 模型效果还不能用；训练链路已通，瓶颈是数据量和标注质量。
+Repository contents on GitHub:
+
+GitHub 当前包含：
+
+- `README.md`, `.gitignore`, and client/project documents under `docs/`. / `README.md`、`.gitignore` 和 `docs/` 下的项目文档。
+- YOLO helper scripts under `scripts/`, especially `scripts/data/prepare_yolo_toy_dataset.py` and `scripts/train/try_predict.py`. / `scripts/` 下的 YOLO 辅助脚本，重点是数据集生成脚本和推理测试脚本。
+- `dataset_yolo_toy/README.md` and `dataset_yolo_toy/data.yaml`; generated toy images and labels are local artifacts. / `dataset_yolo_toy/README.md` 和 `dataset_yolo_toy/data.yaml`；toy 图片和标签是本地产物。
+
+Local data summary:
+
+本地数据概况：
+
+- `data/defect/`: `434` defect originals. / `434` 张缺陷原图。
+- `data/ok/`: `353` OK originals. / `353` 张 OK 原图。
+- Total formal originals under `data/`: `787` images. / `data/` 下正式整理原图共 `787` 张。
+- `enhanced/LAB_b/`: `456` enhanced images. These cover all `434` defect originals and the older `22` OK images; the newer `331` OK images are not enhanced. / `enhanced/LAB_b/` 共 `456` 张增强图，已覆盖全部 `434` 张缺陷原图和旧 `22` 张 OK 图；新增 `331` 张 OK 图未增强。
+- Existing machine-readable YOLO labels: `13` `.txt` files. / 当前已有机器可读 YOLO 标注 `13` 个。
+- First-round manual labeling target: about `273` images. / 第一轮预计待人工标注约 `273` 张。
+
+The toy YOLO training pipeline has already run successfully for a 3-epoch smoke test and a 50-epoch toy run. The toy model is not usable yet; data volume and label quality are still the bottlenecks.
+
+toy YOLO 训练链路已跑通 3 epoch smoke test 和 50 epoch toy training，但 toy 模型还不能用于生产；瓶颈仍是数据量和标注质量。
 
 New batch added on 2026-07-02:
 
@@ -130,8 +145,6 @@ Current technical decisions:
 | Path / 路径 | Purpose / 用途 |
 |---|---|
 | `README.md` | Main project entry for all team members. / 项目总入口，给所有协作者看。 |
-| `ai.md` | AI assistant handoff context with latest decisions and experiment notes. / AI 助手上下文，记录最新决策和实验结果。 |
-| `CLAUDE.md` | Older AI context, kept for history. `ai.md` is preferred. / 旧 AI 上下文，保留作历史参考，优先看 `ai.md`。 |
 | `docs/client/yellow_stain_detection_plan_client.md` | Chinese client-facing project plan. / 中文客户计划书。 |
 | `docs/client/yellow_stain_detection_plan_client.pdf` | PDF version of the Chinese client plan. / 中文客户计划书 PDF。 |
 | `docs/client/yellow_stain_detection_plan_client.html` | HTML version of the Chinese client plan. / 中文客户计划书 HTML。 |
@@ -150,8 +163,6 @@ This is the current working layout after cleanup. Local data and generated artif
 ```text
 .
 ├── README.md
-├── ai.md
-├── CLAUDE.md
 ├── configs/
 ├── docs/
 │   ├── client/
@@ -211,11 +222,27 @@ This is the current working layout after cleanup. Local data and generated artif
 | `dataset_yolo_toy/` | Small YOLO dataset for pipeline testing, not final training. / 小型 YOLO 测试数据集，不是正式训练集。 |
 | `enhanced/`, `enhanced_v2/`, `reveal_out/` | Enhancement outputs for visual analysis only. / 图像增强输出，只用于辅助观察。 |
 | `runs/detect/` | YOLO training and prediction outputs. / YOLO 训练和预测结果。 |
-| `scripts/data/` | Dataset preparation and document conversion scripts. / 数据集整理和文档转换脚本。 |
+| `scripts/data/` | Dataset preparation scripts. / 数据集整理脚本。 |
 | `scripts/experiments/` | Image enhancement and analysis experiments. / 图像增强和分析实验脚本。 |
 | `scripts/train/` | Training and prediction helper scripts. / 训练和推理辅助脚本。 |
 | `models/pretrained/` | Local pretrained weights, ignored by Git. / 本地预训练权重，Git 默认忽略。 |
 | `external/ultralytics/` | Local Ultralytics source/code copy. Usually do not edit. / 本地 Ultralytics 代码，一般不改。 |
+
+Ultralytics YOLO is not vendored in this repository. Install it separately:
+
+本仓库不内置 Ultralytics YOLO 框架源码，使用时单独安装：
+
+```bash
+pip install ultralytics
+```
+
+Official repository:
+
+官方仓库：
+
+```text
+https://github.com/ultralytics/ultralytics
+```
 
 ## Generate LAB_b Enhancement Images / 生成 LAB_b 增强图
 
@@ -252,7 +279,6 @@ Current repository-oriented layout:
 ```text
 .
 ├── README.md
-├── ai.md
 ├── docs/
 │   ├── client/
 │   └── notes/
@@ -288,6 +314,7 @@ GitHub 上传规则：
 
 - Do not commit local absolute paths such as `/Users/name/Desktop/project` or `C:\Users\name\project`. Use `<project-root>` in documentation. / 不要提交本机绝对路径，例如 `/Users/name/Desktop/project` 或 `C:\Users\name\project`。文档里统一写 `<project-root>`。
 - Do not commit client images, raw datasets, training runs, model weights, or cache files unless the team explicitly agrees. / 未经团队确认，不要提交客户图片、原始数据集、训练输出、模型权重或缓存文件。
+- Do not commit local AI handoff notes such as `ai.md` or `CLAUDE.md`. / 不提交本地 AI 交接上下文，例如 `ai.md` 或 `CLAUDE.md`。
 - Keep reusable code, documentation, dataset-conversion scripts, and small config files in Git. / Git 里保留可复用代码、文档、数据集转换脚本和小型配置文件。
 - Use `.gitignore` to block large or sensitive local artifacts. / 用 `.gitignore` 阻止大文件和敏感本地产物被误传。
 
