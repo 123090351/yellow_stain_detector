@@ -3,8 +3,8 @@ from ultralytics import YOLO
 
 def run_freeze_optimization():
     # 23 = Head
-    # 11-22 = Neck
-    # 0-10 = Backbone
+    # 10-22 = Neck
+    # 0-9 = Backbone
 
     freeze_milestones = [23, 22, 19, 16, 13, 9]
     
