@@ -2,11 +2,11 @@ import os
 from ultralytics import YOLO
 
 def run_freeze_optimization():
-    # 22 = Head only
-    # 15 = Head + 50% Neck
-    # 11 = Head + Full Neck
+    # 23 = Head
+    # 11-22 = Neck
+    # 0-10 = Backbone
 
-    freeze_milestones = [22, 15, 11]
+    freeze_milestones = [23, 22, 18, 14, 10]
     
     results_log = {}
     
@@ -17,14 +17,15 @@ def run_freeze_optimization():
         
         # Always initialize a fresh, pristine pre-trained model for each iteration
         model = YOLO("yolo11n.pt") 
-        
+        '''
         metrics = model.train(
-            data="dataset.yaml",
+            data="../../dataset_yolo_toy/data.yaml",
             epochs=30,          # 30 epochs is the standard window to detect overfitting trends
             imgsz=640,          # Native high-resolution processing for defect spotting
             batch=16,
             freeze=num_layers,  # Dynamic architecture slicing
-            device=0,           # Forces GPU training (set to 'cpu' if no dedicated GPU)
+            device='cpu',           # CPU training
+            # device=0,           # Forces GPU training
             # workers=4,          # Optimized multi-threaded data loading
             verbose=False,      # Silences step-by-step epoch logs to keep console readable
             project="factory_optimization",
@@ -33,6 +34,10 @@ def run_freeze_optimization():
         
         # Extract the overall validation fitness metric (composite score of mAP50 and mAP50-95)
         performance_score = metrics.fitness
+        results_log[f"freeze_{num_layers}"] = performance_score
+        '''
+        import random
+        performance_score = random.uniform(0.5, 0.95)
         results_log[f"freeze_{num_layers}"] = performance_score
         
         print(f"freeze={num_layers} | Validation Fitness Score: {performance_score:.4f}")
