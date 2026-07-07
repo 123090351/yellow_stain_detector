@@ -25,7 +25,7 @@ def run_freeze_optimization():
             batch=16,
             freeze=num_layers,  # Dynamic architecture slicing
             device=0,           # Forces GPU training (set to 'cpu' if no dedicated GPU)
-            workers=4,          # Optimized multi-threaded data loading
+            # workers=4,          # Optimized multi-threaded data loading
             verbose=False,      # Silences step-by-step epoch logs to keep console readable
             project="factory_optimization",
             name=f"freeze_{num_layers}"
@@ -53,7 +53,6 @@ def run_freeze_optimization():
             
     print("-" * 40)
     print(f"RECOMMENDED DEPLOYMENT SELECTION: {best_config.upper()} ({best_score:.4f})")
-    print("="*40)
 
 if __name__ == "__main__":
     run_freeze_optimization()
