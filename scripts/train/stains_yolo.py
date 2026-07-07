@@ -11,11 +11,9 @@ def run_freeze_optimization():
     results_log = {}
     
     print("Starting Industrial Freeze Optimization Loop...")
-    print(f"Dataset path verified via dataset.yaml configuration.")
-    print("-" * 60)
 
     for num_layers in freeze_milestones:
-        print(f"\n[LAUNCHING] Experiment: Freezing first {num_layers} layers")
+        print(f"\nFreezing first {num_layers} layers")
         
         # Always initialize a fresh, pristine pre-trained model for each iteration
         model = YOLO("yolo11n.pt") 
@@ -37,15 +35,10 @@ def run_freeze_optimization():
         performance_score = metrics.fitness
         results_log[f"freeze_{num_layers}"] = performance_score
         
-        print(f"[COMPLETED] freeze={num_layers} | Validation Fitness Score: {performance_score:.4f}")
-        print("-" * 60)
+        print(f"freeze={num_layers} | Validation Fitness Score: {performance_score:.4f}")
 
-    # =====================================================================
     # EXPERIMENT SUMMARY PRINT OUT
-    # =====================================================================
-    print("\n" + "="*40)
-    print("      FINAL EXPERIMENT SUMMARY      ")
-    print("="*40)
+    print("\n      FINAL EXPERIMENT SUMMARY      ")
     print("Configuration    |  Validation Fitness")
     print("-" * 40)
     
