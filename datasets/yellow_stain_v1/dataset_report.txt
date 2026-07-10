@@ -1,0 +1,15 @@
+# Yellow Stain YOLO Dataset Report
+
+source: /Users/liugeyu/Desktop/hkpc/yellow_stain/training_data/training_data
+output: /Users/liugeyu/Desktop/hkpc/yellow_stain/datasets/yellow_stain_v1
+seed: 42
+
+total_images: 598
+positive_nonblank_labels: 267
+negative_blank_labels: 331
+
+| split | total | positive | negative |
+|---|---:|---:|---:|
+| train | 419 | 187 | 232 |
+| val | 90 | 40 | 50 |
+| test | 89 | 40 | 49 |
