@@ -17,14 +17,15 @@ def run_freeze_optimization():
         
         # Always initialize a fresh, pristine pre-trained model for each iteration
         model = YOLO("yolo11n.pt") 
-        '''
+        
         metrics = model.train(
-            data="../../dataset_yolo_toy/data.yaml",
+            data="datasets/data.yaml",
             epochs=30,          # 30 epochs is the standard window to detect overfitting trends
             imgsz=640,          # Native high-resolution processing for defect spotting
             batch=16,
             freeze=num_layers,  # Dynamic architecture slicing
-            device='cpu',           # CPU training
+            patience=5,         # Early stopping patience to prevent overfitting
+            device='cpu',       # CPU training
             # device=0,           # Forces GPU training
             # workers=4,          # Optimized multi-threaded data loading
             verbose=False,      # Silences step-by-step epoch logs to keep console readable
@@ -39,7 +40,7 @@ def run_freeze_optimization():
         import random
         performance_score = random.uniform(0.5, 0.95)
         results_log[f"freeze_{num_layers}"] = performance_score
-        
+        '''
         print(f"freeze={num_layers} | Validation Fitness Score: {performance_score:.4f}")
 
     # EXPERIMENT SUMMARY PRINT OUT
