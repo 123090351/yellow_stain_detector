@@ -61,3 +61,6 @@ CLAUDE.md
 # If the team decides labels should be versioned, remove these lines or
 # whitelist a cleaned export folder.
 /annotations/
+
+#extra files
+shuffle.py
