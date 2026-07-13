@@ -1,7 +1,7 @@
 path: /home/dataset
-train: images/train
-val: images/val
-test: images/test
+train: huangban_v1/images/train
+val: huangban_v1/images/val
+test: huangban_v1/images/test
 
 names:
   0: huangban
