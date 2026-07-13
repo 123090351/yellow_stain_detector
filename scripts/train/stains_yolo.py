@@ -25,8 +25,8 @@ def run_freeze_optimization():
             batch=16,
             freeze=num_layers,  # Dynamic architecture slicing
             patience=5,         # Early stopping patience to prevent overfitting
-            device='cpu',       # CPU training
-            # device=0,           # Forces GPU training
+            # device='cpu',       # CPU training
+            device=0,           # Forces GPU training
             # workers=4,          # Optimized multi-threaded data loading
             verbose=False,      # Silences step-by-step epoch logs to keep console readable
             project="factory_optimization",
