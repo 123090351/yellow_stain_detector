@@ -17,7 +17,7 @@ def run_freeze_optimization():
         
         # Always initialize a fresh, pristine pre-trained model for each iteration
         model = YOLO("yolo11n.pt") 
-        '''
+        
         metrics = model.train(
             data="datasets/data.yaml",
             epochs=30,          # 30 epochs is the standard window to detect overfitting trends
@@ -40,7 +40,7 @@ def run_freeze_optimization():
         import random
         performance_score = random.uniform(0.5, 0.95)
         results_log[f"freeze_{num_layers}"] = performance_score
-        
+        '''
         print(f"freeze={num_layers} | Validation Fitness Score: {performance_score:.4f}")
 
     # EXPERIMENT SUMMARY PRINT OUT
