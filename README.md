@@ -520,6 +520,16 @@ yolo detect train \
   name=yellow_stain_v1_yolo11m_1280
 ```
 
+For the business goal, also evaluate image-level OK/NG accuracy. This treats a non-empty ground-truth label as `NG` and any predicted box as predicted `NG`:
+
+针对业务目标，还要评估整图 OK/NG 准确率。这里把非空人工标签视为 `NG`，只要模型预测出任意框就视为预测 `NG`：
+
+```bash
+python scripts/eval/evaluate_image_level_ok_ng.py \
+  --gt-labels datasets/yellow_stain_v1/labels/test \
+  --pred-labels runs/detect/yellow_stain_v1_yolo11n_1280_predict_test_conf005/labels
+```
+
 ## 13. GPU Platform and Docker Workflow / GPU 平台与 Docker 工作流
 
 The company AI/HPC platform runs containers from Docker images. The recommended workflow is to build a dedicated NVIDIA CUDA/PyTorch/YOLO environment image, push or upload it to the company Container Registry, then clone the GitHub source code inside the running GPU container.
