@@ -1,4 +1,4 @@
-path: /home/dataset
+path: /mnt/huangban-data
 train: huangban_v1/images/train
 val: huangban_v1/images/val
 test: huangban_v1/images/test
