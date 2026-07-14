@@ -1,0 +1,49 @@
+.git/
+.DS_Store
+Thumbs.db
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Local notes and editor state
+ai.md
+CLAUDE.md
+.vscode/
+.idea/
+
+# Client data, generated datasets, and training artifacts should not be baked
+# into the environment image. Upload data separately on the GPU platform.
+data/
+pic/
+huangban/
+OK/
+training_data/
+datasets/**/images/
+datasets/**/labels/
+dataset_yolo_toy/images/
+dataset_yolo_toy/labels/
+annotations/
+enhanced/
+enhanced_v2/
+reveal_out/
+runs/
+outputs/
+
+# Large or proprietary artifacts
+*.evo
+*.pt
+*.pth
+*.onnx
+*.engine
+*.zip
+*.tar
+*.tar.gz
+models/pretrained/
+models/exported/
+external/

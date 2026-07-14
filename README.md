@@ -31,9 +31,10 @@ The business goal is image-level `OK / NG` classification, but the current imple
 10. [Export YOLO Labels / 导出 YOLO 标签](#10-export-yolo-labels--导出-yolo-标签)
 11. [YOLO Dataset Format / YOLO 数据格式](#11-yolo-dataset-format--yolo-数据格式)
 12. [Training / 训练](#12-training--训练)
-13. [Evaluation / 评估指标](#13-evaluation--评估指标)
-14. [Open Items / 待推进事项](#14-open-items--待推进事项)
-15. [Delivery and Risks / 交付与风险](#15-delivery-and-risks--交付与风险)
+13. [GPU Platform and Docker Workflow / GPU 平台与 Docker 工作流](#13-gpu-platform-and-docker-workflow--gpu-平台与-docker-工作流)
+14. [Evaluation / 评估指标](#14-evaluation--评估指标)
+15. [Open Items / 待推进事项](#15-open-items--待推进事项)
+16. [Delivery and Risks / 交付与风险](#16-delivery-and-risks--交付与风险)
 
 ## 1. Project Background / 项目背景
 
@@ -81,32 +82,32 @@ Current class list:
 
 ## 3. Current Status / 当前状态
 
-As of 2026-07-02, GitHub contains reusable code, documentation, and small YOLO config files only. Local client images, enhanced images, annotations, model weights, training runs, and third-party source checkouts are ignored by Git and should be shared separately through a drive or shared folder.
+As of 2026-07-13, GitHub contains reusable code, documentation, dataset preparation scripts, tests, and small YOLO config/report files only. Local client images, training image data, model weights, training runs, and third-party source checkouts are ignored by Git and should be shared separately through a drive, shared folder, or the GPU platform upload workflow.
 
-截至 2026-07-02，GitHub 只保留可复用代码、文档和小型 YOLO 配置。客户图片、增强图、标注、模型权重、训练输出和第三方源码副本默认被 Git 忽略，应通过网盘或共享目录单独交付。
+截至 2026-07-13，GitHub 只保留可复用代码、文档、数据集准备脚本、测试和小型 YOLO 配置/报告文件。客户图片、训练图片数据、模型权重、训练输出和第三方源码副本默认被 Git 忽略，应通过网盘、共享目录或 GPU 平台上传流程单独交付。
 
 Repository contents on GitHub:
 
 GitHub 当前包含：
 
 - `README.md`, `.gitignore`, and client/project documents under `docs/`. / `README.md`、`.gitignore` 和 `docs/` 下的项目文档。
-- YOLO helper scripts under `scripts/`, especially `scripts/data/prepare_yolo_toy_dataset.py` and `scripts/train/try_predict.py`. / `scripts/` 下的 YOLO 辅助脚本，重点是数据集生成脚本和推理测试脚本。
-- `dataset_yolo_toy/README.md` and `dataset_yolo_toy/data.yaml`; generated toy images and labels are local artifacts. / `dataset_yolo_toy/README.md` 和 `dataset_yolo_toy/data.yaml`；toy 图片和标签是本地产物。
+- YOLO helper scripts under `scripts/`, especially `scripts/data/prepare_yellow_stain_dataset.py` and `scripts/train/try_predict.py`. / `scripts/` 下的 YOLO 辅助脚本，重点是正式数据集生成脚本和推理测试脚本。
+- `datasets/yellow_stain_v1/data.yaml` and `datasets/yellow_stain_v1/dataset_report.txt`; generated images and labels are local artifacts and are not committed. / `datasets/yellow_stain_v1/data.yaml` 和 `datasets/yellow_stain_v1/dataset_report.txt`；生成的图片和标签是本地产物，不提交 Git。
 
-Local data summary:
+Current cleaned dataset summary:
 
-本地数据概况：
+当前清洗后数据概况：
 
-- `data/defect/`: `434` defect originals. / `434` 张缺陷原图。
-- `data/ok/`: `353` OK originals. / `353` 张 OK 原图。
-- Total formal originals under `data/`: `787` images. / `data/` 下正式整理原图共 `787` 张。
-- `enhanced/LAB_b/`: `456` enhanced images. These cover all `434` defect originals and the older `22` OK images; the newer `331` OK images are not enhanced. / `enhanced/LAB_b/` 共 `456` 张增强图，已覆盖全部 `434` 张缺陷原图和旧 `22` 张 OK 图；新增 `331` 张 OK 图未增强。
-- Existing machine-readable YOLO labels: `13` `.txt` files. / 当前已有机器可读 YOLO 标注 `13` 个。
-- First-round manual labeling target: about `273` images. / 第一轮预计待人工标注约 `273` 张。
+- `training_data/training_data/images/`: `598` cleaned images. / `598` 张清洗后的图片。
+- `training_data/training_data/labels/`: `598` same-stem YOLO labels. / `598` 个同名 YOLO 标签。
+- Positive / NG nonblank labels: `267`. / 非空标签正样本 `267` 个。
+- Negative / OK blank labels: `331`. / 空标签 OK 负样本 `331` 个。
+- Formal YOLO dataset: `datasets/yellow_stain_v1/`. / 正式 YOLO 数据集：`datasets/yellow_stain_v1/`。
+- Split: train `419` (`187` NG + `232` OK), val `90` (`40` NG + `50` OK), test `89` (`40` NG + `49` OK). / 划分：train `419`（`187` NG + `232` OK），val `90`（`40` NG + `50` OK），test `89`（`40` NG + `49` OK）。
 
-The toy YOLO training pipeline has already run successfully for a 3-epoch smoke test and a 50-epoch toy run. The toy model is not usable yet; data volume and label quality are still the bottlenecks.
+The toy YOLO dataset has been removed from the active workflow. The current next step is to run the first GPU baseline on `datasets/yellow_stain_v1/data.yaml`.
 
-toy YOLO 训练链路已跑通 3 epoch smoke test 和 50 epoch toy training，但 toy 模型还不能用于生产；瓶颈仍是数据量和标注质量。
+toy YOLO 数据集已从当前工作流中移除。当前下一步是在 GPU 上基于 `datasets/yellow_stain_v1/data.yaml` 跑第一版 baseline。
 
 New batch added on 2026-07-02:
 
@@ -152,7 +153,7 @@ Current technical decisions:
 | `docs/client/yellow_stain_detection_plan_client_EN.pdf` | PDF version of the English client plan. / 英文客户计划书 PDF。 |
 | `docs/client/yellow_stain_detection_plan_client_EN.html` | HTML version of the English client plan. / 英文客户计划书 HTML。 |
 | `docs/notes/HANDOFF_黄条显现.md` | Image enhancement and yellow-streak visibility notes. / 黄条显现和图像增强交接说明。 |
-| `dataset_yolo_toy/README.md` | Notes for the toy YOLO dataset. / toy YOLO 数据集说明。 |
+| `datasets/yellow_stain_v1/dataset_report.txt` | Generated split summary for the formal YOLO dataset. / 正式 YOLO 数据集切分报告。 |
 
 ## 5. Current Directory Layout / 当前目录结构
 
@@ -176,51 +177,26 @@ This is the current working layout after cleanup. Local data and generated artif
 │   └── pretrained/
 ├── external/
 │   └── ultralytics/
-├── data/
-│   ├── defect/
-│   ├── ok/
-│   └── reference_with_boxes/
-├── pic/
-│   ├── 已识别_不含框/
-│   ├── 已识别_含框/
-│   └── huangban-未识别/
-├── huangban/
-│   └── jpg/
-├── OK/
-├── annotations/
-│   ├── labelme/
-│   └── makesense_2026-06-29_030317/
-├── dataset_yolo_toy/
-│   ├── images/
-│   ├── labels/
-│   ├── data.yaml
-│   └── README.md
-├── enhanced/
-│   └── LAB_b/
-├── enhanced_v2/
-│   ├── CLAHE/
-│   └── Deviation/
-├── reveal_out/
-├── runs/
-│   └── detect/
+├── training_data/
+│   └── training_data/
+│       ├── images/
+│       └── labels/
+├── datasets/
+│   └── yellow_stain_v1/
+│       ├── images/
+│       ├── labels/
+│       ├── data.yaml
+│       └── dataset_report.txt
+└── runs/
+    └── detect/
 ```
 
 ## 6. Directory Guide / 目录说明
 
 | Path / 路径 | Meaning / 说明 |
 |---|---|
-| `data/defect/` | Organized yellow-stain defect images. Use these for formal training after annotation. / 整理后的黄斑缺陷图，标注后用于正式训练。 |
-| `data/ok/` | Organized OK images. In YOLO detection, these should have empty label files. / 整理后的 OK 图，在 YOLO detection 中对应空标签。 |
-| `data/reference_with_boxes/` | Reference images with boxes burned into pixels. Do not use as labels. / 带框参考图，框已烧进像素，不能直接当标签。 |
-| `pic/已识别_不含框/` | First recommended folder for annotation practice and first clean labels. / 推荐优先标注的清晰黄斑原图。 |
-| `pic/已识别_含框/` | Visual reference only. / 只作位置参考。 |
-| `pic/huangban-未识别/` | Hard weak-signal images. Wait for expert guidance before annotation. / 弱信号难例，等专家确认后再标。 |
-| `huangban/` | Earlier raw yellow-stain images and `.info` files. Can be used as a second annotation batch. / 早期黄斑原图和 `.info` 文件，可作为第二批标注。 |
-| `OK/` | Original OK image folder. `data/ok/` is the organized copy. / 原始 OK 图目录，`data/ok/` 是整理版。 |
-| `annotations/labelme/` | Legacy/unused Labelme JSON output folder. Current workflow does not use Labelme. / 历史遗留或备用目录；当前流程不使用 Labelme。 |
-| `annotations/makesense_2026-06-29_030317/` | Archived makesense.ai YOLO labels for 13 images. / makesense.ai 导出的 13 张图 YOLO 标签归档。 |
-| `dataset_yolo_toy/` | Small YOLO dataset for pipeline testing, not final training. / 小型 YOLO 测试数据集，不是正式训练集。 |
-| `enhanced/`, `enhanced_v2/`, `reveal_out/` | Enhancement outputs for visual analysis only. / 图像增强输出，只用于辅助观察。 |
+| `training_data/training_data/` | Cleaned source images and same-stem YOLO labels. Upload separately; do not commit to GitHub. / 清洗后的源图片和同名 YOLO 标签。单独上传，不提交 GitHub。 |
+| `datasets/yellow_stain_v1/` | Generated formal YOLO dataset. `data.yaml` and report are tracked; images and labels are local artifacts. / 生成的正式 YOLO 数据集。`data.yaml` 和报告被跟踪；图片和标签是本地产物。 |
 | `runs/detect/` | YOLO training and prediction outputs. / YOLO 训练和预测结果。 |
 | `scripts/data/` | Dataset preparation scripts. / 数据集整理脚本。 |
 | `scripts/experiments/` | Image enhancement and analysis experiments. / 图像增强和分析实验脚本。 |
@@ -462,42 +438,120 @@ With the current small dataset, metrics are only for learning and debugging, not
 
 ## 12. Training / 训练
 
-Smoke test that has already run successfully:
+Prepare the formal dataset from cleaned source data:
 
-已跑通的 smoke test：
+从清洗后的源数据生成正式数据集：
 
 ```bash
-yolo detect train \
-  model=models/pretrained/yolo11n.pt \
-  data=dataset_yolo_toy/data.yaml \
-  epochs=3 \
-  imgsz=640 \
-  batch=2 \
-  device=cpu \
-  project=runs_yolo_toy \
-  name=smoke_yolo11n \
-  exist_ok=True
+python scripts/data/prepare_yellow_stain_dataset.py
 ```
 
-Typical GPU training command:
+Current formal dataset config:
 
-正式 GPU 训练命令通常类似：
+当前正式数据集配置：
+
+```text
+datasets/yellow_stain_v1/data.yaml
+```
+
+First GPU baseline:
+
+第一版 GPU baseline：
 
 ```bash
 yolo detect train \
-  model=models/pretrained/yolo11n.pt \
-  data=dataset_yolo_toy/data.yaml \
-  epochs=100 \
+  model=yolo11n.pt \
+  data=datasets/yellow_stain_v1/data.yaml \
+  epochs=50 \
   imgsz=640 \
   batch=16 \
-  device=0
+  device=0 \
+  project=runs/detect \
+  name=yellow_stain_v1_yolo11n_640
 ```
 
-Before formal training, replace `dataset_yolo_toy/` with a real dataset generated from confirmed labels.
+After the baseline is healthy, try a higher-resolution run on the 80Gi GPU:
 
-正式训练前，需要把 `dataset_yolo_toy/` 换成由正式标注生成的数据集。
+baseline 正常后，在 80Gi GPU 上尝试高分辨率训练：
 
-## 13. Evaluation / 评估指标
+```bash
+yolo detect train \
+  model=yolo11m.pt \
+  data=datasets/yellow_stain_v1/data.yaml \
+  epochs=150 \
+  imgsz=1280 \
+  batch=-1 \
+  device=0 \
+  project=runs/detect \
+  name=yellow_stain_v1_yolo11m_1280
+```
+
+## 13. GPU Platform and Docker Workflow / GPU 平台与 Docker 工作流
+
+The company AI/HPC platform runs containers from Docker images. The recommended workflow is to build a dedicated NVIDIA CUDA/PyTorch/YOLO environment image, push or upload it to the company Container Registry, then clone the GitHub source code inside the running GPU container.
+
+公司 AI/HPC 平台从 Docker image 启动容器。当前推荐流程是先构建一个专用 NVIDIA CUDA/PyTorch/YOLO 环境镜像，推送或上传到公司 Container Registry，然后在运行中的 GPU 容器里 clone GitHub 源码。
+
+The image is an environment image only. Do not bake client images, generated datasets, training outputs, or private notes into it.
+
+该镜像只作为环境镜像使用。不要把客户图片、生成数据集、训练输出或私有笔记打进镜像。
+
+Build the environment image for the GPU platform:
+
+构建 GPU 平台使用的环境镜像：
+
+```bash
+docker buildx create --use --name yellow-builder
+docker buildx build --platform linux/amd64 -t yellow-stain-yolo:0.1 --load .
+```
+
+Push the image to the company Container Registry using the exact registry path and push command shown by the platform.
+
+使用公司平台显示的准确 registry 路径和 push command，将镜像推送到公司 Container Registry。
+
+GPU container workflow:
+
+GPU 容器流程：
+
+```text
+create one GPU container with yellow-stain-yolo:0.1
+  -> open Web Terminal / Jupyter terminal
+  -> git clone this repository
+  -> upload datasets/yellow_stain_v1/ or upload training_data/ and regenerate the dataset
+  -> run yolo detect train
+```
+
+Suggested platform settings:
+
+建议平台参数：
+
+```text
+container image: yellow-stain-yolo:0.1
+image pull policy: IfNotPresent
+privileged container: false
+command: sleep
+args: 99999999
+GPU physical cards: 1
+GPU compute: 100%
+GPU memory: 80Gi, or the maximum available
+instances / parallelism / successful pods: 1
+restart policy for first interactive run: do not restart
+retry count for first interactive run: 0 or 1
+```
+
+Verify CUDA inside the running container before training:
+
+训练前先在容器内验证 CUDA：
+
+```bash
+python -c "import torch; print(torch.__version__); print(torch.version.cuda); print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'no cuda')"
+```
+
+Do not confuse GitHub source code with a Docker image. A normal GitHub repository stores source code. A Docker image must be pushed to a Docker Registry such as the company Registry, Docker Hub, Quay.io, or GitHub Container Registry.
+
+不要把 GitHub 源码仓库和 Docker image 混淆。普通 GitHub 仓库存源码；Docker image 需要推到 Docker Registry，例如公司 Registry、Docker Hub、Quay.io 或 GitHub Container Registry。
+
+## 14. Evaluation / 评估指标
 
 Key metrics:
 
@@ -526,7 +580,7 @@ runs/detect/.../confusion_matrix.png
 
 `val_batch0_labels.jpg` 是人工标注，`val_batch0_pred.jpg` 是模型预测。对比两者可以看漏检、误检和框偏移。
 
-## 14. Open Items / 待推进事项
+## 15. Open Items / 待推进事项
 
 Priority list:
 
@@ -540,7 +594,7 @@ Priority list:
 6. Confirm acceptance test set, metrics, and false-negative / false-positive priority. / 确认验收测试集、指标以及漏检 / 误检优先级。
 7. If the platform does not train the model, prepare cloud GPU or client GPU server. / 如果平台不负责训练，准备云 GPU 或需求方 GPU 服务器。
 
-## 15. Delivery and Risks / 交付与风险
+## 16. Delivery and Risks / 交付与风险
 
 The client-facing plan currently treats `.evo` as the core delivery format, but the `.evo` generation path is not confirmed yet.
 
