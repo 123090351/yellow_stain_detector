@@ -470,19 +470,53 @@ yolo detect train \
   name=yellow_stain_v1_yolo11n_640
 ```
 
-After the baseline is healthy, try a higher-resolution run on the 80Gi GPU:
+If Ultralytics resolves `path: .` from the repository root on the GPU container and reports a missing path such as `<repo>/images/val`, create a container-local YAML with an absolute dataset root:
 
-baseline 正常后，在 80Gi GPU 上尝试高分辨率训练：
+如果 GPU container 中 Ultralytics 把 `path: .` 解析到仓库根目录，并报缺少 `<repo>/images/val`，在容器内创建一个使用绝对数据集根目录的本地 YAML：
+
+```bash
+cat > datasets/yellow_stain_v1/data_server.yaml <<'EOF'
+path: /data/greya/yellow_stain_detector/datasets/yellow_stain_v1
+train: images/train
+val: images/val
+test: images/test
+
+names:
+  0: huangban
+EOF
+```
+
+Then train with the server YAML:
+
+然后使用服务器 YAML 训练：
+
+```bash
+yolo detect train \
+  model=yolo11n.pt \
+  data=/data/greya/yellow_stain_detector/datasets/yellow_stain_v1/data_server.yaml \
+  epochs=50 \
+  imgsz=640 \
+  batch=16 \
+  device=0 \
+  workers=4 \
+  project=/data/greya/yellow_stain_detector/runs/detect \
+  name=yellow_stain_v1_yolo11n_640
+```
+
+Current first-run result: the `yolo11n` 640 and 1280 baselines run successfully, but recall is still low. The next practical experiment is a larger model at 1280, then review prediction images before further tuning.
+
+当前第一轮结果：`yolo11n` 的 640 和 1280 baseline 都已跑通，但 recall 仍偏低。下一步更实际的是用 1280 跑更大的模型，然后先看预测图再继续调参。
 
 ```bash
 yolo detect train \
   model=yolo11m.pt \
-  data=datasets/yellow_stain_v1/data.yaml \
-  epochs=150 \
+  data=/data/greya/yellow_stain_detector/datasets/yellow_stain_v1/data_server.yaml \
+  epochs=100 \
   imgsz=1280 \
-  batch=-1 \
+  batch=8 \
   device=0 \
-  project=runs/detect \
+  workers=4 \
+  project=/data/greya/yellow_stain_detector/runs/detect \
   name=yellow_stain_v1_yolo11m_1280
 ```
 
@@ -519,6 +553,51 @@ create one GPU container with yellow-stain-yolo:0.1
   -> git clone this repository
   -> upload datasets/yellow_stain_v1/ or upload training_data/ and regenerate the dataset
   -> run yolo detect train
+```
+
+For the HKPC interactive container tested on 2026-07-14, the cloned repository path was:
+
+2026-07-14 测试的 HKPC 交互式容器中，仓库路径为：
+
+```text
+/workspace/yellow_stain_detector
+```
+
+The validated data-transfer route was:
+
+已验证的数据传输路线：
+
+```text
+package datasets/yellow_stain_v1 as yellow_stain_v1_data.zip
+  -> upload to a private Hugging Face dataset repository
+  -> download in the GPU container
+  -> unzip from the cloned repository root
+```
+
+Download example:
+
+下载示例：
+
+```bash
+cd /workspace/yellow_stain_detector
+export HF_TOKEN='<hugging-face-read-token>'
+curl -L \
+  -H "Authorization: Bearer $HF_TOKEN" \
+  "https://huggingface.co/datasets/greyaliu/yellow-stain-v1-data/resolve/main/yellow_stain_v1_data.zip" \
+  -o yellow_stain_v1_data.zip
+unzip -t yellow_stain_v1_data.zip
+unzip yellow_stain_v1_data.zip
+find datasets/yellow_stain_v1/images -type f | wc -l
+find datasets/yellow_stain_v1/labels -type f | wc -l
+```
+
+Expected counts:
+
+预期数量：
+
+```text
+598 images
+598 labels
 ```
 
 Suggested platform settings:
