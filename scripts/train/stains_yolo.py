@@ -19,7 +19,7 @@ def run_freeze_optimization():
         model = YOLO("yolo11n.pt") 
         
         metrics = model.train(
-            data="datasets/data.yaml",
+            data="/mnt/huangban-data/",
             epochs=30,          # 30 epochs is the standard window to detect overfitting trends
             imgsz=640,          # Native high-resolution processing for defect spotting
             batch=16,
