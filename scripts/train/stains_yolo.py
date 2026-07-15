@@ -27,7 +27,7 @@ def run_freeze_optimization():
             patience=10,         # Early stopping patience to prevent overfitting
             # device='cpu',       # CPU training
             device=0,           # Forces GPU training
-            workers=2,          # Optimized multi-threaded data loading
+            workers=0,          # Optimized multi-threaded data loading
             verbose=False,      # Silences step-by-step epoch logs to keep console readable
             project="factory_optimization",
             name=f"freeze_{num_layers}"
