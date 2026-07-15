@@ -36,4 +36,19 @@ RUN python -m pip install --upgrade pip \
 ENV YOLO_CONFIG_DIR=/tmp \
     MPLCONFIGDIR=/tmp/matplotlib
 
-CMD ["sleep", "99999999"]
+ARG CODE_SERVER_VERSION=4.128.0
+ 
+RUN curl -fsSL https://code-server.dev/install.sh -o /tmp/install-code-server.sh \
+&& sh /tmp/install-code-server.sh \
+        --method=standalone \
+        --prefix=/opt/code-server \
+        --version=${CODE_SERVER_VERSION} \
+&& rm -f /tmp/install-code-server.sh
+ 
+COPY docker/start-code-server.sh /usr/local/bin/start-code-server
+RUN chmod +x /usr/local/bin/start-code-server
+ 
+EXPOSE 8080
+
+CMD ["/usr/local/bin/start-code-server"]
+ 
