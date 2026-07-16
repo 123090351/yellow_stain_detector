@@ -20,14 +20,14 @@ def run_freeze_optimization():
         
         metrics = model.train(
             data="/mnt/huangban-data/",
-            epochs=30,
+            epochs=50,
             imgsz=1280,          # Native high-resolution processing for defect spotting
             batch=8,
             freeze=num_layers,  # Dynamic architecture slicing
-            patience=10,         # Early stopping patience to prevent overfitting
+            patience=15,         # Early stopping patience to prevent overfitting
             # device='cpu',       # CPU training
             device=0,           # Forces GPU training
-            workers=4,          # Multi-threaded data loading
+            workers=0,          # Multi-threaded data loading
             verbose=False,      # Silences step-by-step epoch logs to keep console readable
             project="factory_optimization",
             name=f"freeze_{num_layers}"
