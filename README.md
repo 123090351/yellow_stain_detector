@@ -547,6 +547,26 @@ The output contains separate `false_negatives/` and `false_positives/` folders, 
 
 输出会分别保存 `false_negatives/` 与 `false_positives/`，同时包含原图、可用的预测标框图、标签、`manifest.csv` 和简短复核说明。
 
+To select an image-level confidence threshold on the validation split, first run prediction once with `conf=0.01` and `save_conf=True`, then sweep the saved confidence values:
+
+要在 validation split 上选择整图置信度阈值，先以 `conf=0.01` 和 `save_conf=True` 预测一次，再扫描保存的置信度：
+
+```bash
+python scripts/eval/sweep_image_level_thresholds.py \
+  --gt-labels datasets/yellow_stain_v1/labels/val \
+  --pred-labels runs/detect/threshold_sweep_yolo11m_1280_best_val_conf001/labels \
+  --start 0.01 \
+  --stop 0.20 \
+  --step 0.01 \
+  --target-recall 0.80 \
+  --output-csv runs/detect/threshold_sweep_yolo11m_1280_best_val_conf001/threshold_sweep.csv \
+  --output-plot runs/detect/threshold_sweep_yolo11m_1280_best_val_conf001/threshold_sweep.png
+```
+
+The recommendation first requires the target NG recall, then selects the candidate with the highest OK accuracy. Use validation data for threshold selection; do not tune the threshold on the test split.
+
+推荐逻辑会先满足目标 NG recall，再选择 OK accuracy 最高的候选阈值。阈值只能用 validation 数据选择，不要在 test split 上调参。
+
 ## 13. GPU Platform and Docker Workflow / GPU 平台与 Docker 工作流
 
 The company AI/HPC platform runs containers from Docker images. The recommended workflow is to build a dedicated NVIDIA CUDA/PyTorch/YOLO environment image, push or upload it to the company Container Registry, then clone the GitHub source code inside the running GPU container.
