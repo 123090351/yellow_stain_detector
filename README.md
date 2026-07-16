@@ -530,6 +530,23 @@ python scripts/eval/evaluate_image_level_ok_ng.py \
   --pred-labels runs/detect/yellow_stain_v1_yolo11n_1280_predict_test_conf005/labels
 ```
 
+Export all known false negatives and false positives for manual review:
+
+自动整理所有已知漏检和误报图片，供人工复核：
+
+```bash
+python scripts/eval/export_misclassified_review.py \
+  --images datasets/yellow_stain_v1/images/test \
+  --gt-labels datasets/yellow_stain_v1/labels/test \
+  --pred-labels runs/detect/yellow_stain_v1_yolo11m_1280_predict_test_conf005/labels \
+  --prediction-images runs/detect/yellow_stain_v1_yolo11m_1280_predict_test_conf005 \
+  --output-dir /data/greya/lucas_review/yolo11m_1280_conf005
+```
+
+The output contains separate `false_negatives/` and `false_positives/` folders, original images, available prediction previews, labels, `manifest.csv`, and a short review summary.
+
+输出会分别保存 `false_negatives/` 与 `false_positives/`，同时包含原图、可用的预测标框图、标签、`manifest.csv` 和简短复核说明。
+
 ## 13. GPU Platform and Docker Workflow / GPU 平台与 Docker 工作流
 
 The company AI/HPC platform runs containers from Docker images. The recommended workflow is to build a dedicated NVIDIA CUDA/PyTorch/YOLO environment image, push or upload it to the company Container Registry, then clone the GitHub source code inside the running GPU container.
