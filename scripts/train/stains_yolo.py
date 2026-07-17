@@ -6,7 +6,7 @@ def run_freeze_optimization():
     # 10-22 = Neck
     # 0-9 = Backbone
 
-    freeze_milestones = [22, 16, 9, 3]
+    freeze_milestones = [9, 3]
     
     results_log = {}
     
