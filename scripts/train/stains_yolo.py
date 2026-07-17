@@ -6,7 +6,7 @@ def run_freeze_optimization():
     # 10-22 = Neck
     # 0-9 = Backbone
 
-    freeze_milestones = [9, 3]
+    freeze_milestones = [9]
     
     results_log = {}
     
@@ -20,7 +20,7 @@ def run_freeze_optimization():
         
         metrics = model.train(
             data="/mnt/huangban-data/",
-            epochs=50,
+            epochs=100,
             imgsz=1280,          # Native high-resolution processing for defect spotting
             batch=8,
             freeze=num_layers,  # Dynamic architecture slicing
