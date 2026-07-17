@@ -28,6 +28,13 @@ def run_freeze_optimization():
             # device='cpu',       # CPU training
             device=0,           # Forces GPU training
             workers=4,          # Multi-threaded data loading
+            hsv_h=0.0,          # Color adjustments disabled
+            hsv_s=0.0,
+            hsv_v=0.0,
+            gray=0.0,
+            bgr=0.0,
+            mosaic=0.0,         # Disable mosaic augmentation
+            close_mosaic=0.0,
             verbose=False,      # Silences step-by-step epoch logs to keep console readable
             project="factory_optimization",
             name=f"freeze_{num_layers}"
