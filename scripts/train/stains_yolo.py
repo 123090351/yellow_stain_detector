@@ -33,7 +33,7 @@ def run_freeze_optimization():
             hsv_v=0.0,
             bgr=0.0,
             mosaic=0.0,         # Disable mosaic augmentation
-            close_mosaic=0.0,
+            close_mosaic=0,
             erasing=0.0,        # Disable random erasing
             verbose=False,      # Silences step-by-step epoch logs to keep console readable
             project="factory_optimization",
