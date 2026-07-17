@@ -34,6 +34,7 @@ def run_freeze_optimization():
             bgr=0.0,
             mosaic=0.0,         # Disable mosaic augmentation
             close_mosaic=0.0,
+            erasing=0.0,        # Disable random erasing
             verbose=False,      # Silences step-by-step epoch logs to keep console readable
             project="factory_optimization",
             name=f"freeze_{num_layers}"
