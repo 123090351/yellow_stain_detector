@@ -31,7 +31,6 @@ def run_freeze_optimization():
             hsv_h=0.0,          # Color adjustments disabled
             hsv_s=0.0,
             hsv_v=0.0,
-            gray=0.0,
             bgr=0.0,
             mosaic=0.0,         # Disable mosaic augmentation
             close_mosaic=0.0,
