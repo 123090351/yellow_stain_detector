@@ -6,7 +6,7 @@ def run_freeze_optimization():
     # 10-22 = Neck
     # 0-9 = Backbone
 
-    freeze_milestones = [0]
+    freeze_milestones = [22]
     
     results_log = {}
     
@@ -28,7 +28,7 @@ def run_freeze_optimization():
             # device='cpu',       # CPU training
             device=0,           # Forces GPU training
             workers=8,          # Multi-threaded data loading
-            seed=8389,            # Ensures fair comparison
+            seed=3891,            # Ensures fair comparison
             hsv_h=0.0,          # Color adjustments disabled
             hsv_s=0.0,
             hsv_v=0.0,
