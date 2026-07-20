@@ -20,7 +20,7 @@ def run_freeze_optimization():
         
         metrics = model.train(
             data="/mnt/huangban-data/",
-            epochs=100,
+            epochs=200,
             imgsz=640,          # Native high-resolution processing for defect spotting
             batch=16,
             freeze=num_layers,  # Dynamic architecture slicing
