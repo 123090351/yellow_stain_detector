@@ -22,13 +22,13 @@ def run_freeze_optimization():
             data="/mnt/huangban-data/",
             epochs=100,
             imgsz=640,          # Native high-resolution processing for defect spotting
-            batch=8,
+            batch=16,
             freeze=num_layers,  # Dynamic architecture slicing
             patience=15,         # Early stopping patience to prevent overfitting
             # device='cpu',       # CPU training
             device=0,           # Forces GPU training
             workers=8,          # Multi-threaded data loading
-            seed=832879,          # Ensures fair comparison
+            seed=42,          # Ensures fair comparison
             hsv_h=0.0,          # Color adjustments disabled
             hsv_s=0.0,
             hsv_v=0.0,
