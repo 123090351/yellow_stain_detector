@@ -28,7 +28,7 @@ def run_freeze_optimization():
             # device='cpu',       # CPU training
             device=0,           # Forces GPU training
             workers=8,          # Multi-threaded data loading
-            seed=842684,            # Ensures fair comparison
+            seed=8389,            # Ensures fair comparison
             hsv_h=0.0,          # Color adjustments disabled
             hsv_s=0.0,
             hsv_v=0.0,
