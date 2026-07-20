@@ -21,7 +21,7 @@ def run_freeze_optimization():
         metrics = model.train(
             data="/mnt/huangban-data/",
             epochs=100,
-            imgsz=640,          # Native high-resolution processing for defect spotting
+            imgsz=1280,          # Native high-resolution processing for defect spotting
             batch=16,
             freeze=num_layers,  # Dynamic architecture slicing
             patience=15,         # Early stopping patience to prevent overfitting
