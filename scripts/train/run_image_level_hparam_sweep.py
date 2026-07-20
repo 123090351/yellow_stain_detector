@@ -251,6 +251,9 @@ def run_one(
                 shutil.rmtree(managed_path)
 
     best_weights = train_dir / "weights" / "best.pt"
+    if train_dir.exists() and not best_weights.exists():
+        print(f"[{run_name}] Removing incomplete training output")
+        shutil.rmtree(train_dir)
     if not best_weights.exists():
         print(f"[{run_name}] Training")
         model = YOLO(args.model)
@@ -288,10 +291,8 @@ def run_one(
     prediction_marker = predict_dir / ".complete"
     if not prediction_marker.exists():
         if predict_dir.exists():
-            raise RuntimeError(
-                f"Incomplete prediction directory exists: {predict_dir}. "
-                "Rerun with --overwrite."
-            )
+            print(f"[{run_name}] Removing incomplete prediction output")
+            shutil.rmtree(predict_dir)
         print(f"[{run_name}] Predicting validation images at conf={args.prediction_conf}")
         predictor = YOLO(str(best_weights))
         predictor.predict(

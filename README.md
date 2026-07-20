@@ -593,7 +593,7 @@ python scripts/train/run_image_level_hparam_sweep.py \
   --target-recall 0.90
 ```
 
-Results are written under `runs/detect/imgsz_freeze_sweep/`. `leaderboard.csv` ranks only validation results, first requiring the target NG recall and then preferring higher OK accuracy. Completed run results are reused after interruption. Use `--overwrite` only when the sweep-managed outputs should be deleted and rerun.
+Results are written under `runs/detect/imgsz_freeze_sweep/`. `leaderboard.csv` ranks only validation results, first requiring the target NG recall and then preferring higher OK accuracy. After interruption, completed runs are reused and only the incomplete run is restarted. Use `--overwrite` only when every sweep-managed output should be deleted and rerun.
 
 ## 13. GPU Platform and Docker Workflow / GPU 平台与 Docker 工作流
 
