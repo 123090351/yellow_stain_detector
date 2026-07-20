@@ -567,6 +567,34 @@ The recommendation first requires the target NG recall, then selects the candida
 
 推荐逻辑会先满足目标 NG recall，再选择 OK accuracy 最高的候选阈值。阈值只能用 validation 数据选择，不要在 test split 上调参。
 
+### Automated image-level hyperparameter sweep
+
+Queue an `imgsz x freeze` grid on one GPU. Each run trains independently, predicts the validation split at low confidence, performs an image-level threshold sweep, and updates a business-metric leaderboard. The test split is never read.
+
+在单张 GPU 上顺序执行 `imgsz x freeze` 网格。每轮会独立训练、以低阈值预测 validation、执行整图 threshold sweep，并更新业务指标排行榜；脚本不会读取 test。
+
+Preview the nine default runs without training:
+
+```bash
+python scripts/train/run_image_level_hparam_sweep.py --dry-run
+```
+
+Run the default grid (`imgsz=512/640/768`, `freeze=5/10/15`) on the GPU server:
+
+```bash
+python scripts/train/run_image_level_hparam_sweep.py \
+  --data datasets/yellow_stain_v1/data_server.yaml \
+  --val-images datasets/yellow_stain_v1/images/val \
+  --val-labels datasets/yellow_stain_v1/labels/val \
+  --project /data/greya/yellow_stain_detector/runs/detect \
+  --sweep-name imgsz_freeze_sweep \
+  --imgsz 512 640 768 \
+  --freeze 5 10 15 \
+  --target-recall 0.90
+```
+
+Results are written under `runs/detect/imgsz_freeze_sweep/`. `leaderboard.csv` ranks only validation results, first requiring the target NG recall and then preferring higher OK accuracy. Completed run results are reused after interruption. Use `--overwrite` only when the sweep-managed outputs should be deleted and rerun.
+
 ## 13. GPU Platform and Docker Workflow / GPU 平台与 Docker 工作流
 
 The company AI/HPC platform runs containers from Docker images. The recommended workflow is to build a dedicated NVIDIA CUDA/PyTorch/YOLO environment image, push or upload it to the company Container Registry, then clone the GitHub source code inside the running GPU container.
