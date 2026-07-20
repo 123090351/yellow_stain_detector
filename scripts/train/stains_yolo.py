@@ -21,14 +21,14 @@ def run_freeze_optimization():
         metrics = model.train(
             data="/mnt/huangban-data/",
             epochs=100,
-            imgsz=1280,          # Native high-resolution processing for defect spotting
+            imgsz=640,          # Native high-resolution processing for defect spotting
             batch=8,
             freeze=num_layers,  # Dynamic architecture slicing
             patience=15,         # Early stopping patience to prevent overfitting
             # device='cpu',       # CPU training
             device=0,           # Forces GPU training
             workers=8,          # Multi-threaded data loading
-            seed=3891,            # Ensures fair comparison
+            seed=42,          # Ensures fair comparison
             hsv_h=0.0,          # Color adjustments disabled
             hsv_s=0.0,
             hsv_v=0.0,
