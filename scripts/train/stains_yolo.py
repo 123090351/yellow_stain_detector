@@ -79,7 +79,7 @@ def run_freeze_optimization():
         
         metrics = model.train(
             data=data_path,
-            epochs=2,
+            epochs=200,
             imgsz=640,
             batch=16,
             freeze=num_layers,
