@@ -2,7 +2,7 @@ import os
 import torch
 from ultralytics import YOLO
 
-def evaluate_image_level(model, data_dir, conf_thresh=0.25):
+def evaluate_image_level(model, data_dir, conf_thresh=0.175):
     """
     Evaluates image-level (pass/fail) precision, recall, accuracy, and fitness.
     - Ground Truth Positive: The image's corresponding .txt file has >= 1 defect line.
@@ -80,13 +80,13 @@ def run_freeze_optimization():
         metrics = model.train(
             data=data_path,
             epochs=200,
-            imgsz=640,
+            imgsz=768,
             batch=16,
             freeze=num_layers,
             patience=15,
             device=0,
             workers=12,
-            # seed=42,
+            seed=42,
             dropout=0.0,
             
             # Disabled spatial/color augmentations
