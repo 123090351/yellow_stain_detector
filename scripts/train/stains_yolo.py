@@ -83,7 +83,7 @@ def run_freeze_optimization():
             imgsz=640,
             batch=16,
             freeze=num_layers,
-            patience=30,
+            patience=15,
             device=0,
             workers=12,
             seed=42,
