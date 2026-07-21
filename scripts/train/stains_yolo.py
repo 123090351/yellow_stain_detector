@@ -106,7 +106,7 @@ def run_freeze_optimization():
         best_model_path = os.path.join(metrics.save_dir, "weights", "best.pt")
         trained_model = YOLO(best_model_path)
         
-        img_metrics = evaluate_image_level(trained_model, data_path, conf_thresh=0.25)
+        img_metrics = evaluate_image_level(trained_model, data_path, conf_thresh=0.2)
         
         results_log[f"freeze_{num_layers}"] = {
             "box_fitness": box_fitness,
