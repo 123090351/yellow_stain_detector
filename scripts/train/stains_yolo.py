@@ -24,7 +24,7 @@ def run_freeze_optimization():
             imgsz=640,          # Native high-resolution processing for defect spotting
             batch=16,
             freeze=num_layers,  # Dynamic architecture slicing
-            patience=30,         # Early stopping patience to prevent overfitting
+            patience=15,         # Early stopping patience to prevent overfitting
             # device='cpu',       # CPU training
             device=0,           # Forces GPU training
             workers=12,          # Multi-threaded data loading
