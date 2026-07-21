@@ -85,7 +85,7 @@ def run_freeze_optimization():
             workers=12,
             seed=42,
             dropout=0.0,
-            cls=1.5,
+            # cls=1.5,
             
             # Disabled spatial/color augmentations
             hsv_h=0.0, hsv_s=0.0, hsv_v=0.0, bgr=0.0,
