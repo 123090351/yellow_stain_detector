@@ -65,7 +65,7 @@ def evaluate_image_level(model, data_dir, conf_thresh=0.175):
 
 
 def run_freeze_optimization():
-    freeze_milestones = [6]
+    freeze_milestones = [9]
     data_path = "/mnt/huangban-data/"
     results_log = {}
     
