@@ -29,7 +29,8 @@ def run_freeze_optimization():
             device=0,           # Forces GPU training
             workers=12,          # Multi-threaded data loading
             seed=42,          # Ensures fair comparison
-            dropout=0.2,
+            dropout=0.1,
+            conf=0.2,
             hsv_h=0.0,          # Color adjustments disabled
             hsv_s=0.0,
             hsv_v=0.0,
