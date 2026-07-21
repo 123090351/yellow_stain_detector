@@ -88,7 +88,6 @@ def run_freeze_optimization():
             workers=12,
             seed=42,
             dropout=0.0,
-            # cls=1.5,
             
             # Disabled spatial/color augmentations
             hsv_h=0.0, hsv_s=0.0, hsv_v=0.0, bgr=0.0,
@@ -106,7 +105,7 @@ def run_freeze_optimization():
         best_model_path = os.path.join(metrics.save_dir, "weights", "best.pt")
         trained_model = YOLO(best_model_path)
         
-        img_metrics = evaluate_image_level(trained_model, data_path, conf_thresh=0.2)
+        img_metrics = evaluate_image_level(trained_model, data_path, conf_thresh=0.15)
         
         results_log[f"freeze_{num_layers}"] = {
             "box_fitness": box_fitness,
