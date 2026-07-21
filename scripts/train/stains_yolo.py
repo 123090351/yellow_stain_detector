@@ -27,7 +27,7 @@ def run_freeze_optimization():
             patience=15,         # Early stopping patience to prevent overfitting
             # device='cpu',       # CPU training
             device=0,           # Forces GPU training
-            workers=8,          # Multi-threaded data loading
+            workers=12,          # Multi-threaded data loading
             seed=42,          # Ensures fair comparison
             dropout=0.2,
             hsv_h=0.0,          # Color adjustments disabled
