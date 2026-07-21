@@ -98,9 +98,9 @@ def run_freeze_optimization():
             name=f"freeze_{num_layers}"
         )
         
-        box_fitness = metrics.fitness
-        box_precision = metrics.box.p
-        box_recall = metrics.box.r
+        box_fitness = float(metrics.fitness)
+        box_precision = float(metrics.box.p)
+        box_recall = float(metrics.box.r)
         
         # Image-Level Metrics (Pass/Fail Evaluation)
         best_model_path = os.path.join(metrics.save_dir, "weights", "best.pt")
@@ -112,10 +112,10 @@ def run_freeze_optimization():
             "box_fitness": box_fitness,
             "box_p": box_precision,
             "box_r": box_recall,
-            "img_p": img_metrics["img_precision"],
-            "img_r": img_metrics["img_recall"],
-            "img_acc": img_metrics["img_accuracy"],
-            "img_fitness": img_metrics["img_fitness"]
+            "img_p": float(img_metrics["img_precision"]),
+            "img_r": float(img_metrics["img_recall"]),
+            "img_acc": float(img_metrics["img_accuracy"]),
+            "img_fitness": float(img_metrics["img_fitness"])
         }
 
     # EXPERIMENT SUMMARY PRINT OUT
@@ -129,7 +129,7 @@ def run_freeze_optimization():
     best_score = -1.0
     
     for run, m in results_log.items():
-        print(f"{run:<12} | {m['box_fitness']:<8.4f} | {m['box_p']:<7.4f} | {m['box_r']:<7.4f} | {m['img_acc']:<8.4f} | {m['img_p']:<7.4f} | {m['img_r']:<7.4f} | {m['img_fitness']:<8.4f}")
+        print(f"{run:<12} | {m['box_p']:<7.4f} | {m['box_r']:<7.4f} | {m['box_fitness']:<8.4f} | {m['img_p']:<7.4f} | {m['img_r']:<7.4f} | {m['img_acc']:<8.4f} | {m['img_fitness']:<8.4f}")
         
         if m["img_fitness"] > best_score:
             best_score = m["img_fitness"]
