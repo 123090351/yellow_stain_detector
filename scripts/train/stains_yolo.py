@@ -30,6 +30,7 @@ def run_freeze_optimization():
             workers=12,          # Multi-threaded data loading
             seed=42,          # Ensures fair comparison
             dropout=0.0,
+            conf=0.1,
             
             hsv_h=0.0,          # Color adjustments disabled
             hsv_s=0.0,
