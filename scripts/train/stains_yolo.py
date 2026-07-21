@@ -65,7 +65,7 @@ def evaluate_image_level(model, data_dir, conf_thresh=0.175):
 
 
 def run_freeze_optimization():
-    freeze_milestones = [1]
+    freeze_milestones = [3]
     data_path = "/mnt/huangban-data/"
     results_log = {}
     
@@ -86,7 +86,7 @@ def run_freeze_optimization():
             patience=15,
             device=0,
             workers=12,
-            seed=42,
+            # seed=42,
             dropout=0.0,
             
             # Disabled spatial/color augmentations
