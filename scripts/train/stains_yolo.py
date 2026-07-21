@@ -99,8 +99,8 @@ def run_freeze_optimization():
         )
         
         box_fitness = float(metrics.fitness)
-        box_precision = float(metrics.box.p)
-        box_recall = float(metrics.box.r)
+        box_precision = float(metrics.box.p.squeeze().item())
+        box_recall = float(metrics.box.r.squeeze().item())
         
         # Image-Level Metrics (Pass/Fail Evaluation)
         best_model_path = os.path.join(metrics.save_dir, "weights", "best.pt")
