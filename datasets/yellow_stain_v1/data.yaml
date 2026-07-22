@@ -1,7 +1,7 @@
 path: /mnt/huangban-data
-train: huangban_v1/images/train
-val: huangban_v1/images/val
-test: huangban_v1/images/test
+train: huangban_v2/images/train
+val: huangban_v2/images/val
+test: huangban_v2/images/test
 
 names:
   0: huangban
