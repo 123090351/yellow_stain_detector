@@ -8,8 +8,8 @@ def evaluate_image_level(model, data_dir, conf_thresh=0.175):
     - Ground Truth Positive: The image's corresponding .txt file has >= 1 defect line.
     - Model Predicted Positive: YOLO outputs >= 1 bounding box above `conf_thresh`.
     """
-    val_images_dir = os.path.join(data_dir, "huangban_v1/images/val")
-    val_labels_dir = os.path.join(data_dir, "huangban_v1/labels/val")
+    val_images_dir = os.path.join(data_dir, "huangban_v2/images/val")
+    val_labels_dir = os.path.join(data_dir, "huangban_v2/labels/val")
 
     # If the subfolder pathing differs, fall back to scanning labels/val directory directly
     if not os.path.exists(val_images_dir):
