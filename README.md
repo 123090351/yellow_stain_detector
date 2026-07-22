@@ -567,6 +567,36 @@ The recommendation first requires the target NG recall, then selects the candida
 
 推荐逻辑会先满足目标 NG recall，再选择 OK accuracy 最高的候选阈值。阈值只能用 validation 数据选择，不要在 test split 上调参。
 
+### Experimental YOLO + LAB-b rescue
+
+The hybrid evaluator leaves all detections above the locked YOLO threshold unchanged. For lower-confidence candidate boxes, it measures relative yellow evidence as the selected percentile of the ROI's LAB-b channel minus the whole-image LAB-b median. A candidate is rescued as NG only when both its confidence and LAB-b score pass the validation-selected thresholds. This is post-processing only: it does not modify Ultralytics or the checkpoint.
+
+混合评估器不会改变高于已锁定 YOLO threshold 的检测。对于较低置信度候选框，它用“候选区域 LAB-b 分位数减去整图 LAB-b 中位数”衡量相对黄色信号；候选框只有同时通过低置信度和 LAB-b 阈值才会额外判为 NG。这只是后处理，不会修改 Ultralytics 或 checkpoint。
+
+The prediction labels must come from a low-confidence validation prediction with `save_txt=True` and `save_conf=True`. Sweep only on validation:
+
+预测标签必须来自开启 `save_txt=True`、`save_conf=True` 的低阈值 validation 预测。只在 validation 上搜索参数：
+
+```bash
+python scripts/eval/sweep_yolo_lab_hybrid.py \
+  --images datasets/yellow_stain_v1/images/val \
+  --gt-labels datasets/yellow_stain_v1/labels/val \
+  --pred-labels runs/detect/imgsz_freeze_sweep/predict/imgsz768_freeze5_seed42/labels \
+  --direct-conf 0.109 \
+  --rescue-conf 0.001 0.003 0.005 0.01 0.02 0.03 0.05 0.07 0.09 \
+  --lab-start 0 \
+  --lab-stop 40 \
+  --lab-step 0.5 \
+  --lab-percentile 90 \
+  --target-recall 1.0 \
+  --output-csv runs/detect/yolo_lab_hybrid_val/sweep.csv \
+  --output-decisions runs/detect/yolo_lab_hybrid_val/decisions.csv
+```
+
+The script prints the original YOLO-only baseline and the selected hybrid result. It also writes every grid result and a per-image decision file. If validation does not improve, ignore the hybrid outputs and continue using the original checkpoint and threshold. If it improves, lock both selected values and evaluate exactly that one pair on the development test; do not sweep the test split.
+
+脚本会同时打印原始 YOLO-only baseline 和选中的混合结果，并保存全部网格结果与逐图决策。若 validation 没有提升，直接忽略混合输出并继续使用原 checkpoint 与 threshold；若有提升，则锁定两个参数，在 development test 上只评估这一组，不能重新 sweep test。
+
 ### Automated image-level hyperparameter sweep
 
 Queue an `imgsz x freeze` grid on one GPU. Each run trains independently, predicts the validation split at low confidence, performs an image-level threshold sweep, and updates a business-metric leaderboard. The test split is never read.
