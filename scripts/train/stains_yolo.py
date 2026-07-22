@@ -86,7 +86,7 @@ def run_freeze_optimization():
             patience=15,
             device=0,
             workers=12,
-            seed=2024,
+            seed=100,
             dropout=0.0,
             
             # Disabled spatial/color augmentations
