@@ -569,9 +569,9 @@ The recommendation first requires the target NG recall, then selects the candida
 
 ### Experimental YOLO + LAB-b rescue
 
-The hybrid evaluator leaves all detections above the locked YOLO threshold unchanged. For lower-confidence candidate boxes, it measures relative yellow evidence as the selected percentile of the ROI's LAB-b channel minus the whole-image LAB-b median. A candidate is rescued as NG only when both its confidence and LAB-b score pass the validation-selected thresholds. This is post-processing only: it does not modify Ultralytics or the checkpoint.
+The hybrid evaluator leaves all detections above the locked YOLO threshold unchanged. For lower-confidence candidate boxes, it measures relative yellow evidence as the selected percentile of the ROI's LAB-b channel minus either the whole-image median or the median of a local ring around the box. A candidate is rescued as NG only when both its confidence and LAB-b score pass the validation-selected thresholds. This is post-processing only: it does not modify Ultralytics or the checkpoint.
 
-混合评估器不会改变高于已锁定 YOLO threshold 的检测。对于较低置信度候选框，它用“候选区域 LAB-b 分位数减去整图 LAB-b 中位数”衡量相对黄色信号；候选框只有同时通过低置信度和 LAB-b 阈值才会额外判为 NG。这只是后处理，不会修改 Ultralytics 或 checkpoint。
+混合评估器不会改变高于已锁定 YOLO threshold 的检测。对于较低置信度候选框，它用“候选区域 LAB-b 分位数减去整图中位数或候选框外围局部中位数”衡量相对黄色信号；候选框只有同时通过低置信度和 LAB-b 阈值才会额外判为 NG。这只是后处理，不会修改 Ultralytics 或 checkpoint。
 
 The prediction labels must come from a low-confidence validation prediction with `save_txt=True` and `save_conf=True`. Sweep only on validation:
 
@@ -588,10 +588,17 @@ python scripts/eval/sweep_yolo_lab_hybrid.py \
   --lab-stop 40 \
   --lab-step 0.5 \
   --lab-percentile 90 \
+  --lab-baseline local-ring \
+  --lab-ring-scale 2.0 \
   --target-recall 1.0 \
   --output-csv runs/detect/yolo_lab_hybrid_val/sweep.csv \
   --output-decisions runs/detect/yolo_lab_hybrid_val/decisions.csv
 ```
+
+`--lab-baseline local-ring` compares each low-confidence YOLO box with its nearby
+background instead of the whole-image median. `--lab-ring-scale 2.0` uses an
+expanded region twice the box width and height, excluding the box itself. Omit
+these two options to reproduce the original whole-image LAB-b baseline.
 
 The script prints the original YOLO-only baseline and the selected hybrid result. It also writes every grid result and a per-image decision file. If validation does not improve, ignore the hybrid outputs and continue using the original checkpoint and threshold. If it improves, lock both selected values and evaluate exactly that one pair on the development test; do not sweep the test split.
 

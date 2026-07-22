@@ -26,6 +26,43 @@ class SweepYoloLabHybridTest(unittest.TestCase):
 
         self.assertEqual(30.0, lab_yellow_delta(lab_b, box, percentile=90.0))
 
+    def test_local_ring_uses_nearby_background_instead_of_whole_image(self):
+        lab_b = np.full((20, 20), 200, dtype=np.float32)
+        lab_b[6:14, 6:14] = 130
+        lab_b[8:12, 8:12] = 150
+        box = PredictionBox(
+            x_center=0.5,
+            y_center=0.5,
+            width=0.2,
+            height=0.2,
+            confidence=0.05,
+        )
+
+        global_delta = lab_yellow_delta(lab_b, box, percentile=90.0)
+        local_delta = lab_yellow_delta(
+            lab_b,
+            box,
+            percentile=90.0,
+            baseline_mode="local-ring",
+            ring_scale=2.0,
+        )
+
+        self.assertEqual(-50.0, global_delta)
+        self.assertEqual(20.0, local_delta)
+
+    def test_local_ring_rejects_invalid_scale(self):
+        lab_b = np.full((10, 10), 128, dtype=np.float32)
+        box = PredictionBox(0.5, 0.5, 0.4, 0.4, 0.05)
+
+        with self.assertRaisesRegex(ValueError, "greater than 1"):
+            lab_yellow_delta(
+                lab_b,
+                box,
+                percentile=90.0,
+                baseline_mode="local-ring",
+                ring_scale=1.0,
+            )
+
     def test_selects_lab_rescue_that_meets_target_recall_with_fewer_false_positives(self):
         samples = [
             ImageSample("ng_direct", True, (ScoredBox(0.20, 0.0),)),

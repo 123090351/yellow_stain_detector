@@ -118,11 +118,17 @@ def lab_yellow_delta(
     lab_b: np.ndarray,
     box: PredictionBox,
     percentile: float,
+    baseline_mode: str = "global",
+    ring_scale: float = 2.0,
 ) -> float:
     if lab_b.ndim != 2:
         raise ValueError("LAB b input must be a two-dimensional array")
     if not 0 < percentile <= 100:
         raise ValueError("LAB percentile must be in (0, 100]")
+    if baseline_mode not in {"global", "local-ring"}:
+        raise ValueError("LAB baseline mode must be 'global' or 'local-ring'")
+    if ring_scale <= 1.0:
+        raise ValueError("LAB ring scale must be greater than 1")
 
     image_height, image_width = lab_b.shape
     x1 = max(0, int(np.floor((box.x_center - box.width / 2) * image_width)))
@@ -133,8 +139,28 @@ def lab_yellow_delta(
         return float("-inf")
 
     roi = lab_b[y1:y2, x1:x2]
-    image_baseline = float(np.median(lab_b))
-    return float(np.percentile(roi, percentile) - image_baseline)
+    if baseline_mode == "global":
+        baseline = float(np.median(lab_b))
+    else:
+        center_x = (x1 + x2) / 2
+        center_y = (y1 + y2) / 2
+        ring_width = (x2 - x1) * ring_scale
+        ring_height = (y2 - y1) * ring_scale
+        ring_x1 = max(0, int(np.floor(center_x - ring_width / 2)))
+        ring_y1 = max(0, int(np.floor(center_y - ring_height / 2)))
+        ring_x2 = min(image_width, int(np.ceil(center_x + ring_width / 2)))
+        ring_y2 = min(image_height, int(np.ceil(center_y + ring_height / 2)))
+
+        expanded = lab_b[ring_y1:ring_y2, ring_x1:ring_x2]
+        ring_mask = np.ones(expanded.shape, dtype=bool)
+        ring_mask[y1 - ring_y1 : y2 - ring_y1, x1 - ring_x1 : x2 - ring_x1] = False
+        ring_pixels = expanded[ring_mask]
+        baseline = (
+            float(np.median(ring_pixels))
+            if ring_pixels.size
+            else float(np.median(lab_b))
+        )
+    return float(np.percentile(roi, percentile) - baseline)
 
 
 def index_images(images_dir: Path) -> dict[str, Path]:
@@ -157,6 +183,8 @@ def load_samples(
     gt_labels: Path,
     pred_labels: Path,
     lab_percentile: float,
+    lab_baseline: str = "global",
+    lab_ring_scale: float = 2.0,
 ) -> list[ImageSample]:
     gt_files = sorted(gt_labels.glob("*.txt"))
     if not gt_files:
@@ -177,7 +205,13 @@ def load_samples(
         scored_boxes = tuple(
             ScoredBox(
                 confidence=box.confidence,
-                lab_delta=lab_yellow_delta(lab_b, box, percentile=lab_percentile),
+                lab_delta=lab_yellow_delta(
+                    lab_b,
+                    box,
+                    percentile=lab_percentile,
+                    baseline_mode=lab_baseline,
+                    ring_scale=lab_ring_scale,
+                ),
             )
             for box in prediction_boxes
         )
@@ -410,6 +444,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--lab-stop", type=float, default=40.0)
     parser.add_argument("--lab-step", type=float, default=0.5)
     parser.add_argument("--lab-percentile", type=float, default=90.0)
+    parser.add_argument(
+        "--lab-baseline",
+        choices=("global", "local-ring"),
+        default="global",
+        help=(
+            "Reference for the LAB-b delta. 'global' preserves the original whole-image "
+            "median; 'local-ring' uses pixels around each YOLO box."
+        ),
+    )
+    parser.add_argument(
+        "--lab-ring-scale",
+        type=float,
+        default=2.0,
+        help="Width and height multiplier for the local background ring (must be > 1).",
+    )
     parser.add_argument("--target-recall", type=float, default=1.0)
     parser.add_argument("--output-csv", type=Path, required=True)
     parser.add_argument("--output-decisions", type=Path, required=True)
@@ -422,12 +471,16 @@ def main() -> None:
         raise ValueError("Target recall must be between 0 and 1")
     if args.direct_conf <= 0:
         raise ValueError("Direct confidence must be greater than zero")
+    if args.lab_ring_scale <= 1:
+        raise ValueError("LAB ring scale must be greater than 1")
 
     samples = load_samples(
         images_dir=args.images,
         gt_labels=args.gt_labels,
         pred_labels=args.pred_labels,
         lab_percentile=args.lab_percentile,
+        lab_baseline=args.lab_baseline,
+        lab_ring_scale=args.lab_ring_scale,
     )
     baseline = evaluate_configuration(
         samples,
