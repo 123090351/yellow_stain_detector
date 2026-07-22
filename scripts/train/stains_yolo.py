@@ -83,10 +83,10 @@ def run_freeze_optimization():
             imgsz=640,
             batch=16,
             freeze=num_layers,
-            patience=15,
+            patience=30,
             device=0,
             workers=12,
-            seed=123,
+            seed=100,
             dropout=0.0,
             
             # Disabled spatial/color augmentations
