@@ -89,7 +89,7 @@ def run_freeze_optimization():
             freeze=num_layers,
             patience=30,
             device=0,
-            workers=12,
+            workers=16,
             seed=7,
             dropout=0.0,
             
