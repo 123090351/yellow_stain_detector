@@ -70,7 +70,7 @@ def evaluate_saved_model(model_path, data_path, conf_thresh=0.175, split="test")
 
 if __name__ == "__main__":
     # Path to your saved model checkpoint from a previous run
-    SAVED_MODEL_PATH = "/mnt/huangban-script/runs/detect/factory_optimization/freeze_3-10/weights/best.pt"
+    SAVED_MODEL_PATH = "/mnt/huangban-script/runs/detect/factory_optimization/freeze_3-23/weights/best.pt"
     DATA_PATH = "/mnt/huangban-data/"
 
     # Evaluate on TEST set directly without retraining
