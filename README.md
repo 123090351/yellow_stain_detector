@@ -403,6 +403,25 @@ coordinates. Blank TXT files are recorded as `EMPTY` by default, not assumed to
 be reviewed OK images. Pass `--empty-label-status OK` only when the annotation
 workflow explicitly created a blank TXT for every confirmed defect-free image.
 
+Build v2 by preserving the existing v1 splits and assigning the new all-NG data
+by capture hour:
+
+```bash
+python scripts/data/prepare_yellow_stain_v2.py \
+  --v1-dataset /data/greya/yellow_stain_detector/datasets/yellow_stain_v1 \
+  --new-manifest /data/greya/new_data/yellow_stain_v2_raw_20260723/raw/manifest.csv \
+  --output /data/greya/yellow_stain_detector/datasets/yellow_stain_v2 \
+  --train-hours 14 15 \
+  --val-hours 13 \
+  --test-hours 16 \
+  --unparsed-split train \
+  --dry-run
+```
+
+Remove `--dry-run` only after reviewing the split counts. The two filenames
+without parseable capture times must be explicitly assigned to training; they
+must not be used for validation or test.
+
 构建 YOLO detection 数据集时，OK 图应对应空的 `.txt` 标签文件。
 
 ## 11. YOLO Dataset Format / YOLO 数据格式
