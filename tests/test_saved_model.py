@@ -17,6 +17,16 @@ def evaluate_saved_model(model_path, data_path, conf_thresh=0.175, split="test")
 
     tp, fp, tn, fn = 0, 0, 0, 0
 
+    # Insert this check inside evaluate_saved_model before running predict:
+    print("="*50)
+    print(f"Targeting Images Directory : {images_dir}")
+    print(f"Targeting Labels Directory : {labels_dir}")
+
+# Count exact image files in folder manually
+    actual_files = [f for f in os.listdir(images_dir) if f.lower().endswith(('.jpg', '.jpeg', '.png', '.bmp'))]
+    print(f"Actual image files on disk : {len(actual_files)}")
+    print("="*50)
+
     # Stream prediction over test images
     results = model.predict(source=images_dir, conf=conf_thresh, stream=True, verbose=False)
 
