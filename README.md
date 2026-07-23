@@ -388,6 +388,21 @@ For this project:
 
 OK images should have empty `.txt` label files when building a YOLO detection dataset.
 
+Audit a newly received raw dataset and generate a manifest before splitting it:
+
+```bash
+python scripts/data/build_yolo_manifest.py \
+  --images /data/greya/new_data/yellow_stain_v2_raw_20260723/raw/images \
+  --labels /data/greya/new_data/yellow_stain_v2_raw_20260723/raw/labels \
+  --output /data/greya/new_data/yellow_stain_v2_raw_20260723/raw/manifest.csv
+```
+
+The command does not move or split data. It verifies one-to-one image/TXT pairing,
+duplicate stems, the five-field YOLO detection format, class `0`, and normalized
+coordinates. Blank TXT files are recorded as `EMPTY` by default, not assumed to
+be reviewed OK images. Pass `--empty-label-status OK` only when the annotation
+workflow explicitly created a blank TXT for every confirmed defect-free image.
+
 构建 YOLO detection 数据集时，OK 图应对应空的 `.txt` 标签文件。
 
 ## 11. YOLO Dataset Format / YOLO 数据格式
