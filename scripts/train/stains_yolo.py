@@ -26,6 +26,10 @@ def evaluate_image_level(model, data_dir, conf_thresh=0.175):
         label_name = os.path.splitext(img_name)[0] + ".txt"
         label_path = os.path.join(val_labels_dir, label_name)
 
+        if not os.path.exists(label_path):
+            print("skip")
+            continue
+
         # Check Ground Truth: Does the label file exist and contain at least 1 object line?
         has_gt_defect = False
         if os.path.exists(label_path):
@@ -86,7 +90,7 @@ def run_freeze_optimization():
             patience=30,
             device=0,
             workers=12,
-            seed=100,
+            seed=7,
             dropout=0.0,
             
             # Disabled spatial/color augmentations
