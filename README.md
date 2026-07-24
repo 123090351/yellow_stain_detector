@@ -422,6 +422,24 @@ Remove `--dry-run` only after reviewing the split counts. The two filenames
 without parseable capture times must be explicitly assigned to training; they
 must not be used for validation or test.
 
+Extend v2 with a reviewed all-OK manifest while skipping OK stems already
+present in v2:
+
+```bash
+python scripts/data/prepare_yellow_stain_v3.py \
+  --base-dataset /data/greya/yellow_stain_detector/datasets/yellow_stain_v2 \
+  --ok-manifest /data/greya/new_data/yellow_stain_v2_ok_raw_20260724/raw/manifest.csv \
+  --output /data/greya/yellow_stain_detector/datasets/yellow_stain_v3 \
+  --train-hours 8 9 10 11 13 \
+  --val-hours 14 \
+  --test-hours 15 16 \
+  --dry-run
+```
+
+The v3 builder preserves every v2 split, validates that overlapping stems are
+already-empty OK labels, skips those overlaps, and assigns only unique new OK
+images by continuous capture-hour blocks.
+
 构建 YOLO detection 数据集时，OK 图应对应空的 `.txt` 标签文件。
 
 ## 11. YOLO Dataset Format / YOLO 数据格式
