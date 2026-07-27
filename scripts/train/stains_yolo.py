@@ -70,7 +70,7 @@ def evaluate_image_level(model, data_dir, conf_thresh=0.175):
 
 def run_freeze_optimization():
     freeze_milestones = [3]
-    data_path = "/mnt/huangban-data/"
+    data_path = "/mnt/huangban-dataspace/"
     results_log = {}
     
     print("Starting Industrial Freeze Optimization Loop with Image-Level Tracking...")

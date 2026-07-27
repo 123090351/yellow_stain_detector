@@ -1,4 +1,4 @@
-path: /mnt/huangban-data
+path: /mnt/huangban-dataspace
 train: huangban_v2/images/train
 val: huangban_v2/images/val
 test: huangban_v2/images/test
