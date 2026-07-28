@@ -1,0 +1,37 @@
+model_name: yellow-stain-v3-yolo11m
+architecture: YOLO11m
+task: detect
+class_names:
+  0: huangban
+
+inference:
+  imgsz: 768
+  confidence_threshold: 0.381
+  decision_rule: any_detection_at_or_above_threshold_is_NG
+
+training:
+  pretrained_weights: yolo11m.pt
+  epochs: 100
+  batch: 16
+  freeze: 3
+  patience: 15
+  workers: 12
+  seed: 21
+  deterministic: true
+
+environment:
+  python: 3.11.9
+  pytorch: 2.4.1+cu121
+  ultralytics: 8.4.93
+  cuda: "12.1"
+
+test_result:
+  images: 389
+  accuracy: 0.987
+  precision: 0.965
+  ng_recall: 1.0
+  ok_accuracy: 0.980
+  tp: 136
+  fp: 5
+  tn: 248
+  fn: 0

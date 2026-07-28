@@ -1,0 +1,24 @@
+FROM pytorch/pytorch:2.4.1-cuda12.1-cudnn9-runtime
+
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    YOLO_CONFIG_DIR=/tmp \
+    MPLCONFIGDIR=/tmp/matplotlib
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN python -m pip install --upgrade pip \
+    && pip install ultralytics==8.4.93
+
+COPY scripts/infer/predict_ok_ng.py /app/predict_ok_ng.py
+COPY delivery/model.yaml /app/model.yaml
+
+VOLUME ["/model", "/input", "/output"]
+
+ENTRYPOINT ["python", "/app/predict_ok_ng.py"]
+CMD ["--model", "/model/best.pt", "--source", "/input", "--output", "/output"]

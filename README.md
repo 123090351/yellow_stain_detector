@@ -152,6 +152,7 @@ Current technical decisions:
 | `docs/client/yellow_stain_detection_plan_client_EN.md` | English client-facing project plan. / 英文客户计划书。 |
 | `docs/client/yellow_stain_detection_plan_client_EN.pdf` | PDF version of the English client plan. / 英文客户计划书 PDF。 |
 | `docs/client/yellow_stain_detection_plan_client_EN.html` | HTML version of the English client plan. / 英文客户计划书 HTML。 |
+| `docs/DELIVERY_ZH.md` | Reproducible source, model, Docker image, and acceptance handoff guide. / 代码、模型、Docker 环境和验收交付说明。 |
 | `docs/notes/HANDOFF_黄条显现.md` | Image enhancement and yellow-streak visibility notes. / 黄条显现和图像增强交接说明。 |
 | `datasets/yellow_stain_v1/dataset_report.txt` | Generated split summary for the formal YOLO dataset. / 正式 YOLO 数据集切分报告。 |
 
@@ -838,6 +839,15 @@ Priority list:
 7. If the platform does not train the model, prepare cloud GPU or client GPU server. / 如果平台不负责训练，准备云 GPU 或需求方 GPU 服务器。
 
 ## 16. Delivery and Risks / 交付与风险
+
+The reproducible Docker/model handoff procedure is documented in
+`docs/DELIVERY_ZH.md`. Batch inference is provided by
+`scripts/infer/predict_ok_ng.py`, and the production image is defined by
+`docker/Dockerfile.inference`.
+
+可复现的 Docker、模型及验收交付流程见 `docs/DELIVERY_ZH.md`。批量 OK/NG
+推理由 `scripts/infer/predict_ok_ng.py` 提供，生产推理镜像定义在
+`docker/Dockerfile.inference`。
 
 The client-facing plan currently treats `.evo` as the core delivery format, but the `.evo` generation path is not confirmed yet.
 
