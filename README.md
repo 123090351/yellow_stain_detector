@@ -91,7 +91,9 @@ Repository contents on GitHub:
 GitHub 当前包含：
 
 - `README.md`, `.gitignore`, and client/project documents under `docs/`. / `README.md`、`.gitignore` 和 `docs/` 下的项目文档。
-- YOLO helper scripts under `scripts/`, especially `scripts/data/prepare_yellow_stain_dataset.py` and `scripts/train/try_predict.py`. / `scripts/` 下的 YOLO 辅助脚本，重点是正式数据集生成脚本和推理测试脚本。
+- YOLO helper scripts under `scripts/`, especially the dataset preparation,
+  evaluation, sweep, and production inference scripts. / `scripts/` 下的数据集整理、
+  评估、参数扫描和生产推理脚本。
 - `datasets/yellow_stain_v1/data.yaml` and `datasets/yellow_stain_v1/dataset_report.txt`; generated images and labels are local artifacts and are not committed. / `datasets/yellow_stain_v1/data.yaml` 和 `datasets/yellow_stain_v1/dataset_report.txt`；生成的图片和标签是本地产物，不提交 Git。
 
 Current cleaned dataset summary:
@@ -173,11 +175,11 @@ This is the current working layout after cleanup. Local data and generated artif
 ├── scripts/
 │   ├── data/
 │   ├── experiments/
+│   ├── eval/
+│   ├── infer/
 │   └── train/
 ├── models/
 │   └── pretrained/
-├── external/
-│   └── ultralytics/
 ├── training_data/
 │   └── training_data/
 │       ├── images/
@@ -201,9 +203,10 @@ This is the current working layout after cleanup. Local data and generated artif
 | `runs/detect/` | YOLO training and prediction outputs. / YOLO 训练和预测结果。 |
 | `scripts/data/` | Dataset preparation scripts. / 数据集整理脚本。 |
 | `scripts/experiments/` | Image enhancement and analysis experiments. / 图像增强和分析实验脚本。 |
-| `scripts/train/` | Training and prediction helper scripts. / 训练和推理辅助脚本。 |
+| `scripts/train/` | Training and hyperparameter sweep scripts. / 训练和超参数扫描脚本。 |
+| `scripts/eval/` | Image-level and box-level evaluation utilities. / 图片级和框级评估工具。 |
+| `scripts/infer/` | Production-style inference that writes OK/NG decisions and annotated images. / 输出 OK/NG 判断和标注图的生产推理脚本。 |
 | `models/pretrained/` | Local pretrained weights, ignored by Git. / 本地预训练权重，Git 默认忽略。 |
-| `external/ultralytics/` | Local Ultralytics source/code copy. Usually do not edit. / 本地 Ultralytics 代码，一般不改。 |
 
 Ultralytics YOLO is not vendored in this repository. Install it separately:
 
@@ -264,14 +267,14 @@ Current repository-oriented layout:
 ├── datasets/
 ├── scripts/
 │   ├── data/
-│   ├── train/
-│   └── experiments/
+│   ├── eval/
+│   ├── experiments/
+│   ├── infer/
+│   └── train/
 ├── models/
 │   ├── pretrained/
 │   └── exported/
-├── runs/
-└── external/
-    └── ultralytics/
+└── runs/
 ```
 
 Cleanup rules:
@@ -283,7 +286,8 @@ Cleanup rules:
 - Put one-off experiment outputs under `runs/` or `outputs/`. / 实验输出放到 `runs/` 或 `outputs/`。
 - Put reusable scripts under `scripts/`. / 可复用脚本放到 `scripts/`。
 - Put client-facing documents under `docs/client/`. / 对外客户文档放到 `docs/client/`。
-- Put third-party source code under `external/`. / 第三方源码放到 `external/`。
+- Install third-party frameworks as dependencies instead of copying their source
+  into this repository. / 第三方框架通过依赖安装，不复制源码到本仓库。
 
 GitHub rules:
 
