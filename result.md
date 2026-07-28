@@ -1,6 +1,6 @@
 # Yellow Stain Detection - Current Results
 
-**Updated:** 27 July 2026  
+**Updated:** 28 July 2026
 **Primary objective:** Image-level OK/NG classification with priority on
 minimizing missed NG defects.
 
@@ -152,6 +152,41 @@ came from epoch 79. This is normal early-stopping behavior. Seeds 0 and 42 were
 used only as validation stability checks. The test split was not used to select
 among them, and seed 21 remains the locked candidate.
 
+## 640-Pixel Challenger
+
+A colleague-provided configuration was reproduced on the same v3 train and
+validation splits:
+
+```text
+model: YOLO11m
+imgsz: 640
+freeze: 3
+epochs: 200 maximum
+batch: 16
+patience: 30
+workers: 16
+seed: 141803
+validation threshold: 0.203
+```
+
+Its image-level validation result was perfect:
+
+| Threshold | Accuracy | Precision | NG Recall | OK Accuracy | TP / FP / TN / FN |
+|---:|---:|---:|---:|---:|---:|
+| 0.203 | 1.000 | 1.000 | 1.000 | 1.000 | 110 / 0 / 163 / 0 |
+
+Its validation box result was:
+
+| Model | Box P | Box R | mAP50 | mAP50-95 |
+|---|---:|---:|---:|---:|
+| 768, seed 42 | **0.937** | 0.803 | **0.873** | 0.687 |
+| 640, seed 141803 | 0.919 | **0.811** | 0.869 | **0.688** |
+
+The box differences are negligible and both configurations reached perfect
+image-level validation. The 640 model has not been run on the locked test and
+is retained only as a lighter challenger for a future independent batch. It
+does not replace the tested seed-21 768-pixel candidate.
+
 ## Box-Level Results
 
 The v3 seed-21 checkpoint was evaluated on the test split at `conf=0.001` to
@@ -198,3 +233,55 @@ Use the seed-21 YOLO-only checkpoint with image threshold 0.381 as the current
 candidate. Do not add LAB-b rescue or continue tuning against the current test
 set. Archive the checkpoint, training arguments, dataset report, threshold, and
 SHA-256 checksum, then evaluate once on a future independent OK+NG batch.
+
+## Delivery Artifacts
+
+The handoff consists of separate artifacts with different responsibilities:
+
+### `best.pt`
+
+`best.pt` is the trained PyTorch/Ultralytics checkpoint selected at the best
+validation epoch. It contains the learned YOLO11m weights and model metadata.
+It does not contain the training images, Python environment, source repository,
+or Docker runtime. The current file is approximately 40.5 MB and must be
+delivered with a SHA-256 checksum.
+
+### `model.yaml`
+
+`delivery/model.yaml` is a small human-readable configuration and model-card
+summary. It records the class name, `imgsz=768`, image-level
+`threshold=0.381`, training parameters, environment versions, and locked test
+metrics. It does not contain neural-network weights and cannot perform
+inference without `best.pt`.
+
+### Inference Docker Image
+
+The inference Docker image is the reproducible Linux/Python/CUDA/Ultralytics
+runtime built from `docker/Dockerfile.inference`. It includes
+`scripts/infer/predict_ok_ng.py` but intentionally excludes client data and
+`best.pt`. At runtime the recipient mounts:
+
+```text
+/model/best.pt -> trained checkpoint
+/input         -> unlabelled original images
+/output        -> decisions.csv, summary.json, and optional annotated images
+```
+
+The image therefore packages the software environment, while `best.pt`
+packages the learned model and `model.yaml` packages the locked parameters.
+
+### Inference Without Labels
+
+YOLO can directly process original PNG/JPG images without any TXT labels.
+Labels are required only for training or for computing evaluation metrics
+against known ground truth. During inference:
+
+1. the model reads an original image;
+2. it predicts zero or more `huangban` boxes and confidence scores;
+3. boxes at or above confidence 0.381 are drawn on the optional annotated copy;
+4. any such box makes the image-level decision `NG`;
+5. no qualifying box makes the decision `OK`.
+
+The delivered inference script writes one row per input image to
+`decisions.csv` and can save images with the predicted yellow-stain boxes. No
+same-name label file is needed for this production prediction workflow.
