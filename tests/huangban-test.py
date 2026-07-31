@@ -89,7 +89,7 @@ def classify_unlabeled_images(
 
 if __name__ == "__main__":
     SAVED_MODEL_PATH = "/mnt/huangban-script/runs/detect/factory_optimization/freeze_3-40/weights/best.pt"
-    DATA_PATH = "/mnt/huangban-ok-test"  # Direct folder containing target images
+    DATA_PATH = "/mnt/huangban-test"  # Direct folder containing target images
 
     # Execute classification
     summary = classify_unlabeled_images(
