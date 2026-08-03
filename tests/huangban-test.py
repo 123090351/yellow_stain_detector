@@ -57,7 +57,7 @@ def classify_unlabeled_images(
         if status == "Defective":
             defective_count += 1
             max_conf = float(result.boxes.conf.max()) if num_detections > 0 else 0.0
-            print(f"[DEFECT DETECTED] {img_name} -> {num_detections} defect(s) found (Max Conf: {max_conf:.2f})")
+            # print(f"[DEFECT DETECTED] {img_name} -> {num_detections} defect(s) found (Max Conf: {max_conf:.2f})")
             target_subfolder = defective_dir
         else:
             ok_count += 1
