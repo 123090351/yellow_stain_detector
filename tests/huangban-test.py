@@ -1,5 +1,6 @@
 import os
 import csv
+import shutil
 from pathlib import Path
 from ultralytics import YOLO
 
@@ -13,7 +14,7 @@ def classify_unlabeled_images(
 ):
     """
     Runs YOLO inference on an unlabeled image dataset, classifies each image as 'Defective' or 'OK',
-    and saves the visual images with bounding boxes into separate 'OK' and 'Defective' subfolders.
+    clears previous run outputs, and saves visual images with bounding boxes into separate 'OK' and 'Defective' subfolders.
     """
     print(f"Loading model from: {model_path}")
     model = YOLO(model_path)
@@ -21,11 +22,16 @@ def classify_unlabeled_images(
     # Determine image directory path
     images_dir = data_path
 
-    # Define and create subfolders for OK and Defective predictions
+    # Define subfolders for OK and Defective predictions
     ok_dir = os.path.join(annotated_dir, "OK")
     defective_dir = os.path.join(annotated_dir, "Defective")
 
     if save_annotated:
+        # Clear previous run outputs if they exist
+        if os.path.exists(annotated_dir):
+            shutil.rmtree(annotated_dir)
+            
+        # Recreate clean empty folders
         os.makedirs(ok_dir, exist_ok=True)
         os.makedirs(defective_dir, exist_ok=True)
 
