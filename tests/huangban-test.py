@@ -9,11 +9,11 @@ def classify_unlabeled_images(
     conf_thresh=0.175, 
     output_csv="classification_results.csv",
     save_annotated=True,          # <--- Flag to enable saving visual outputs
-    annotated_dir="/mnt/output/annotated" # <--- Directory to save images with drawn boxes
+    annotated_dir="/mnt/output/annotated" # <--- Root directory for saved outputs
 ):
     """
     Runs YOLO inference on an unlabeled image dataset, classifies each image as 'Defective' or 'OK',
-    and optionally saves the visual images with bounding boxes.
+    and saves the visual images with bounding boxes into separate 'OK' and 'Defective' subfolders.
     """
     print(f"Loading model from: {model_path}")
     model = YOLO(model_path)
@@ -21,13 +21,18 @@ def classify_unlabeled_images(
     # Determine image directory path
     images_dir = data_path
 
+    # Define and create subfolders for OK and Defective predictions
+    ok_dir = os.path.join(annotated_dir, "OK")
+    defective_dir = os.path.join(annotated_dir, "Defective")
+
     if save_annotated:
-        os.makedirs(annotated_dir, exist_ok=True)
+        os.makedirs(ok_dir, exist_ok=True)
+        os.makedirs(defective_dir, exist_ok=True)
 
     print("=" * 60)
     print(f"Targeting Images Directory : {images_dir}")
     if save_annotated:
-        print(f"Saving Annotated Images To: {annotated_dir}")
+        print(f"Saving Classified Images To : {annotated_dir} (OK / Defective)")
 
     # Manual check of image count
     valid_exts = ('.jpg', '.jpeg', '.png', '.bmp')
@@ -53,14 +58,16 @@ def classify_unlabeled_images(
             defective_count += 1
             max_conf = float(result.boxes.conf.max()) if num_detections > 0 else 0.0
             print(f"[DEFECT DETECTED] {img_name} -> {num_detections} defect(s) found (Max Conf: {max_conf:.2f})")
+            target_subfolder = defective_dir
         else:
             ok_count += 1
             max_conf = 0.0
+            target_subfolder = ok_dir
 
-        # --- SAVE ANNOTATED IMAGE WITH BOXES ---
+        # --- SAVE ANNOTATED IMAGE TO SPECIFIC SUBFOLDER ---
         if save_annotated:
-            save_path = os.path.join(annotated_dir, img_name)
-            result.save(filename=save_path)  # <--- Draws boxes and saves to disk
+            save_path = os.path.join(target_subfolder, img_name)
+            result.save(filename=save_path)  # Draws boxes (if any) and saves to OK or Defective folder
 
         results_list.append({
             "image_name": img_name,
@@ -87,8 +94,9 @@ def classify_unlabeled_images(
         "defect_rate_pct": defect_rate
     }
 
+
 if __name__ == "__main__":
-    SAVED_MODEL_PATH = "/mnt/huangban-script/runs/detect/factory_optimization/freeze_3-41/weights/best.pt"
+    SAVED_MODEL_PATH = "/mnt/huangban-script/runs/detect/factory_optimization/freeze_3-42/weights/best.pt"
     DATA_PATH = "/mnt/huangban-test"  # Direct folder containing target images
 
     # Execute classification
