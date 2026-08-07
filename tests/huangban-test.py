@@ -51,7 +51,7 @@ def classify_unlabeled_images(
     results_list = []
 
     # Stream predictions over images
-    results = model.predict(source=images_dir, conf=conf_thresh, device=0, stream=True, verbose=False, provider='CUDAExecutionProvider')
+    results = model.predict(source=images_dir, conf=conf_thresh, device=0, stream=True, verbose=False)
 
     for result in results:
         img_name = os.path.basename(result.path)
